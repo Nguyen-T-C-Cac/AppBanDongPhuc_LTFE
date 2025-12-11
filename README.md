@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# Project: App bán đồng phục
+# Nhóm 91
+=========================
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
+# Khởi chạy ứng dụng
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Xem trên trình duyệt: [http://localhost:3000](http://localhost:3000).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
+# Chạy test
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
+Mở test runner ở chế độ interactive watch mode.
+Tham khảo thêm [running tests](https://facebook.github.io/create-react-app/docs/running-tests).
+# Build ứng dụng
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Tạo bản build trong thư mục `build`.
+- Tối ưu hiệu năng cho môi trường production.
+- File build được minify và có hash trong tên để tránh cache lỗi.
+Tài liệu tham khảo: [deployment](https://facebook.github.io/create-react-app/docs/deployment).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
+# Eject cấu hình
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**Lưu ý: Đây là thao tác không thể hoàn tác**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Lệnh này sẽ copy toàn bộ file cấu hình (Webpack, Babel, ESLint, …) vào project.
+- Sau khi eject, bạn có toàn quyền chỉnh sửa cấu hình.
+- Tuy nhiên, hãy cân nhắc kỹ trước khi sử dụng vì hầu hết dự án vừa và nhỏ không cần eject.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Tài liệu tham khảo
+[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+[React documentation](https://reactjs.org/).
 
-## Learn More
+**Note:**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Dự án được khởi tạo bằng Create React App.
+- Các lệnh trên là chuẩn mặc định, phù hợp cho hầu hết môi trường phát triển.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
