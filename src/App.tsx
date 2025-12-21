@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
 /* Pages */
-import Index from './pages/Index';
+import Welcome from './pages/Index';
 import Home from './pages/HomePage';
 import Products from './pages/ProductListingPage';
 import Orders from './pages/OrdersPage';
@@ -17,7 +17,7 @@ function App() {
         <Routes>
 
           {/*k có navbar */}
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Welcome />} />
 
           {/* Các trang trong app – có bottom navbar */}
           <Route

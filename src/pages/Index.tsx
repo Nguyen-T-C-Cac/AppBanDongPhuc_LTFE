@@ -1,11 +1,18 @@
 import React from 'react';
-const Index = () => {
+import { useNavigate } from 'react-router-dom';
+
+import wel from '../assets/welcome/Welcome.png'
+import startBtn from '../assets/welcome/start.svg'
+
+const Welcome: React.FC = () => {
+    const navigate = useNavigate();
     return (
-        <div className="index-page">
-            <h1>Uniform91</h1>
-            <p>Simple. Modern. Made for Teams.</p>
+        <div className="welcome-page">
+            <img src={wel} alt="Wel" className="welcome-bg"/>
+            <img src={startBtn} alt="Start" className="start-btn"
+                 onClick={() => navigate('/home')}/>
         </div>
     );
 };
 
-export default Index;
+export default Welcome;

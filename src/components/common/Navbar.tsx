@@ -1,9 +1,9 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import homeIcon from '../assets/icon/nav-bottom/home.svg';
-import productsIcon from '../assets/icon/nav-bottom/products.svg';
-import ordersIcon from '../assets/icon/nav-bottom/orders.svg';
-import userIcon from '../assets/icon/nav-bottom/user.svg';
+import homeIcon from '../../assets/icon/nav-bottom/home.svg';
+import productsIcon from '../../assets/icon/nav-bottom/products.svg';
+import ordersIcon from '../../assets/icon/nav-bottom/orders.svg';
+import userIcon from '../../assets/icon/nav-bottom/user.svg';
 
 const Navbar: React.FC = () => {
 

@@ -39,8 +39,7 @@
 /*header*/
 .header {
   position: sticky;
-  top: 0;
-  z-index: 1000;
+  top: 5px;
 
   height: 60px;
   background-color: #fff;
@@ -51,34 +50,36 @@
 
   padding: 0 16px;
   border-bottom: 1px solid #e5e5e5;
+  z-index: 1000;
 }
 
 .header-logo {
-  height: 32px;
+  height: 40px;
   cursor: pointer;
 }
 
-.header-icons {
+.header-right {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 16px; /* khoảng cách giữa search và cart */
 }
 
 .header-icons img {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
 
 .search-input {
-  flex: 1;
-  margin: 0 12px;
-
+  width: 180px;
   height: 36px;
   padding: 0 12px;
 
   border: 1px solid #ddd;
   border-radius: 18px;
   font-size: 14px;
+
+  animation: slideIn 0.25s ease;
 }
 
 /*Nav -bottom */
@@ -99,7 +100,7 @@
   z-index: 1000;
 }
 
-.nav-item {
+.nav-bottom-item {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -110,22 +111,57 @@
   font-size: 12px;
 }
 
-.nav-item img {
+.nav-bottom-item img {
   width: 24px;
   height: 24px;
   margin-bottom: 4px;
 }
 
 /* active state */
-.nav-item.active {
+.nav-bottom-item.active {
   color: #392EBE;
 }
 .content {
   padding-top: 60px;
   padding-bottom: 80px;
 }
-.nav-item.active img {
+.nav-bottom-item.active img {
   filter: brightness(0) saturate(100%) invert(32%) sepia(87%) saturate(2254%)
   hue-rotate(202deg) brightness(98%) contrast(101%);
+}
+/*Welcome page*/
+.welcome-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.welcome-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Start button */
+.start-btn {
+  position: absolute;
+  bottom: 44px;
+  right: 24px;
+
+  width: 84px;
+  height: 84px;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover / tap effect */
+.start-btn:hover {
+  transform: scale(1.08);
+}
+
+.start-btn:active {
+  transform: scale(0.95);
 }
 
