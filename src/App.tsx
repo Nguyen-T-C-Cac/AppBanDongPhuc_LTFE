@@ -10,6 +10,7 @@ import Orders from './pages/OrdersPage';
 import Account from './pages/AccountPage';
 import Cart from './pages/CartPage';
 import MainLayout from './layouts/MainLayout';
+import CategoryProducts from "./pages/Products/CategoryProducts";
 
 function App() {
   return (
@@ -37,6 +38,12 @@ function App() {
                 </MainLayout>
               }
           />
+            <Route path="/products/:category"
+                   element={
+                <MainLayout>
+                <CategoryProducts />
+                </MainLayout>
+            } />
 
           <Route
               path="/orders"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import { categories } from '../../data/categories';
 import img_shool from '../../assets/icon/products/school.png'
 import img_company from '../../assets/icon/products/company.png'
@@ -16,10 +17,13 @@ const imgcategories: Record<number, string> = {
     6: img_event
 };
 const CategoryCard = () => {
+    const navigate = useNavigate();
     return (
         <div className="category-card">
             {categories.map(cat => (
-                <div key={cat.id} className="category-item">
+                <div key={cat.id} className="category-item"
+                     onClick={() => navigate(`/products/${cat.name}`)}
+                     style={{ cursor: "pointer" }}>
                     <div className="category-icon">
                         <img src={imgcategories[cat.id]} alt={cat.name}/>
                     </div>

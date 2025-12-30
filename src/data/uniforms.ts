@@ -23,7 +23,7 @@ const uniforms = [
         ],
         colors: ["White", "Navy"],
         genders: ["Male", "Female"],
-        style: "Polo",
+        types: ["Polo"],
         allowLogoUpload: true
     },
 
@@ -48,7 +48,7 @@ const uniforms = [
         ],
         colors: ["White", "Light Blue", "Navy"],
         genders: ["Male", "Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: true
     },
 
@@ -74,7 +74,7 @@ const uniforms = [
         ],
         colors: ["Black", "Dark Blue"],
         genders: ["Male", "Female"],
-        style: "Pants",
+        types: ["Pants"],
         allowLogoUpload: false
     },
 
@@ -99,7 +99,7 @@ const uniforms = [
             { size: "XXL", stock: 52 },
         ],
         colors: ["Black", "Dark Blue"],
-        style: "Skirt",
+        types: ["Skirt"],
         allowLogoUpload: false
     },
 
@@ -124,23 +124,23 @@ const uniforms = [
         ],
         colors: ["Light Blue", "Blue", "White"],
         genders:["Male", "Female"],
-        style: "Set",
+        types: ["Set"],
         allowLogoUpload: true,
     },
 
     {
         id: 6,
-        name: "Middle & High School Student Uniform",
+        name: "Middle and High School Student Uniform",
         price: 269000,
         description:
             "Student uniform made of Kate fabric, colorfast, easy to wash and iron.",
         category: "School",
         images: [
-            "images/DongPhucHocSinhTHCS,PT/trangden.jpg",
-            "images/DongPhucHocSinhTHCS,PT/trangvang.jpg",
-            "images/DongPhucHocSinhTHCS,PT/xanhden.jpg",
-            "images/DongPhucHocSinhTHCS,PT/xanhnavi.jpg",
-            "images/DongPhucHocSinhTHCS,PT/xanhnhat.jpg",
+            "images/DongPhucHocSinhTHCS-PT/xanhnhat.jpg",
+            "images/DongPhucHocSinhTHCS-PT/trangden.jpg",
+            "images/DongPhucHocSinhTHCS-PT/trangvang.jpg",
+            "images/DongPhucHocSinhTHCS-PT/xanhden.jpg",
+            "images/DongPhucHocSinhTHCS-PT/xanhnavy.jpg",
         ],
         minimumOrderQuantity: 50,
         sizes: [
@@ -150,7 +150,7 @@ const uniforms = [
             { size: "L", stock: 256 },
         ],
         genders:["Male", "Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: true,
     },
 
@@ -176,7 +176,7 @@ const uniforms = [
             { size: "L", stock: 362 },
         ],
         genders:["Male", "Female"],
-        style: "Set",
+        types: ["Set"],
         allowLogoUpload: true,
     },
 
@@ -202,7 +202,7 @@ const uniforms = [
             {size: "L", stock: 199},
         ],
         genders: ["Male", "Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: true,
     },
 
@@ -227,7 +227,7 @@ const uniforms = [
             {size: "L", stock: 203},
         ],
         genders: ["Male", "Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: false,
     },
 
@@ -249,10 +249,10 @@ const uniforms = [
             {size: "M", stock: 352},
             {size: "L", stock: 247},
         ],
-        types:["Silk", "Chiffon", "Voile"],
-        style: "Set",
+        types:["Set","Silk", "Chiffon", "Voile"],
         allowLogoUpload: false
     },
+
 
     {
         id: 11,
@@ -276,7 +276,7 @@ const uniforms = [
         ],
         colors: ["Mint", "Blue", "Grey"],
         genders:["Male", "Female"],
-        style: "Jacket",
+        types: ["Jacket"],
         allowLogoUpload: true,
     },
 
@@ -302,7 +302,7 @@ const uniforms = [
         ],
         colors: ["Green", "Navy", "Gray"],
         genders:["Male", "Female"],
-        style: "Jacket",
+        types: ["Jacket"],
         allowLogoUpload: true,
     },
 
@@ -327,7 +327,7 @@ const uniforms = [
         ],
         colors: ["Be", "Grey", "Blue"],
         genders:["Male", "Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: true,
     },
     {
@@ -338,7 +338,6 @@ const uniforms = [
             "Protective uniform made of kaki, dust-resistant, ensures work safety.",
         category: "Factory",
         images: [
-            "/images/DongPhucCongNhanXayDung/denxam.jpg",
             "/images/DongPhucCongNhanXayDung/doxanh.jpg",
             "/images/DongPhucCongNhanXayDung/xamtrang.jpg",
             "/images/DongPhucCongNhanXayDung/xanhtrang.jpg",
@@ -350,10 +349,9 @@ const uniforms = [
             { size: "XL", stock: 114 },
             { size: "XXL", stock: 68 },
         ],
-        colors: ["Black", "Red", "Grey"],
+        colors: ["Red", "Grey", "Blue"],
         genders:["Male", "Female"],
-        types:["Hat","Shoes","Pants","Shirt"],
-        style: "Set",
+        types:["Set","Hat","Shoes","Pants","Shirt"],
         allowLogoUpload: true,
     },
 
@@ -378,8 +376,7 @@ const uniforms = [
             { size: "XXL", stock: 60 },
         ],
         genders:["Male", "Female"],
-        types:["Shirt", "Pants"],
-        style: "Set",
+        types:["Set", "Shirt", "Pants"],
         allowLogoUpload: true,
     },
 
@@ -406,7 +403,7 @@ const uniforms = [
         ],
         colors: ["White", "Gray", "Grey", "Black"],
         genders:["Male","Female"],
-        style: "T-shirt",
+        types: ["T-shirt"],
         allowLogoUpload: true,
     },
 
@@ -433,7 +430,7 @@ const uniforms = [
         ],
         colors: ["Navy", "White", "Pink", "Black"],
         genders:["Male","Female"],
-        style: "Polo",
+        types: ["Polo"],
         allowLogoUpload: true,
     },
 
@@ -459,7 +456,7 @@ const uniforms = [
         ],
         colors: ["Black","White", "Mint", "Gray"],
         genders:["Male","Female"],
-        style: "Vest",
+        types: ["Vest"],
         allowLogoUpload: false,
     },
 
@@ -484,7 +481,7 @@ const uniforms = [
         ],
         colors: ["Black","White", "Gray"],
         genders:["Male","Female"],
-        style: "Vest",
+        types: ["Vest"],
         allowLogoUpload: false,
     },
 
@@ -509,12 +506,81 @@ const uniforms = [
         ],
         colors: ["White","NaVy", "Black"],
         genders:["Male","Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: false,
     },
-
     {
         id: 21,
+        name: "Spring Festival Áo Dài",
+        price: 750000,
+        description:
+            "A refined Vietnamese áo dài crafted for spring celebrations, blending traditional elegance with modern comfort.",
+        category: "Event",
+        images: [
+            "/images/AoDaiDuXuan/xanhnhat3.webp",
+            "/images/AoSoMiSuKien/xanhnhat2.webp",
+            "/images/AoSoMiSuKien/xanhnhat1.webp",
+        ],
+        minimumOrderQuantity: 20,
+        sizes: [
+            { size: "S", stock: 453 },
+            { size: "M", stock: 312 },
+            { size: "L", stock: 341 },
+            { size: "XL", stock: 241 },
+        ],
+        genders:["Female"],
+        types: ["Set"],
+        allowLogoUpload: false,
+    },
+    {
+        id: 22,
+        name: "Men’s Spring Festival Áo Dài",
+        price: 747000,
+        description:
+            "A men’s traditional Vietnamese áo dài designed for spring festivals," +
+            " featuring elegant patterns and a comfortable fit, perfect for celebrating Lunar New Year and cultural events.",
+        category: "Event",
+        images: [
+            "/images/AodaiDuXuanNam/aodainamkem.jpg",
+            "/images/AodaiDuXuanNam/aodainamxanh.jpg",
+            "/images/AodaiDuXuanNam/aodainamxanh1.jpg",
+        ],
+        minimumOrderQuantity: 25,
+        sizes: [
+            { size: "S", stock: 453 },
+            { size: "M", stock: 312 },
+            { size: "L", stock: 341 },
+            { size: "XL", stock: 241 },
+        ],
+        genders:["Male"],
+        types: ["Set"],
+        allowLogoUpload: false,
+    },
+    {
+        id: 23,
+        name: "Modern Áo Dài",
+        price: 550000,
+        description:
+            "A stylish modern áo dài reimagined with contemporary cuts while preserving traditional Vietnamese charm.",
+        category: "Event",
+        images: [
+            "/images/AoDaiTanThoi/cachtantrang.webp",
+            "/images/AoDaiTanThoi/cachtando.webp",
+            "/images/AoDaiTanThoi/cachtanvang.webp",
+        ],
+        minimumOrderQuantity: 20,
+        sizes: [
+            { size: "S", stock: 453 },
+            { size: "M", stock: 312 },
+            { size: "L", stock: 341 },
+            { size: "XL", stock: 241 },
+        ],
+        genders:["Female"],
+        types: ["Set"],
+        allowLogoUpload: false,
+    },
+    {
+        id: 24,
         name: "Sports T-Shirt",
         price: 119000,
         description:
@@ -536,12 +602,12 @@ const uniforms = [
         ],
         colors: ["Blue", "White"],
         genders:["Male","Female"],
-        style: "T-shirt",
+        types: ["T-shirt"],
         allowLogoUpload: false,
     },
 
     {
-        id: 22,
+        id: 25,
         name: "Women's Sports Croptop",
         price: 89000,
         description:
@@ -560,12 +626,12 @@ const uniforms = [
             { size: "XL", stock: 475 },
         ],
         colors: ["Black", "Pink", "Yellow"],
-        style: "T-shirt",
+        types: ["T-shirt"],
         allowLogoUpload: false,
     },
 
     {
-        id: 23,
+        id: 26,
         name: "Sports Pants",
         price: 139000,
         description:
@@ -586,11 +652,11 @@ const uniforms = [
         ],
         colors: ["Black", "Gray", "Navy"],
         genders:["Male", "Female"],
-        style: "Pants",
+        types: ["Pants"],
         allowLogoUpload: false,
     },
     {
-        id: 24,
+        id: 27,
         name: "Sports Skirt",
         price: 149000,
         description:
@@ -613,12 +679,12 @@ const uniforms = [
             { size: "XL", stock: 399 },
         ],
         colors: ["Black", "White"],
-        style: "Skirt",
+        types: ["Skirt"],
         allowLogoUpload: false,
     },
 
     {
-        id: 25,
+        id: 28,
         name: "Men's Sports Shorts",
         price: 99000,
         description:
@@ -638,12 +704,12 @@ const uniforms = [
             { size: "XL", stock: 403 },
         ],
         colors: ["Black","Grey","Navy"],
-        style: "Short-Pants",
+        types: ["Short-Pants"],
         allowLogoUpload: false,
     },
 
     {
-        id: 26,
+        id: 29,
         name: "Chef Jacket",
         price: 229000,
         description:
@@ -663,12 +729,12 @@ const uniforms = [
         ],
         colors: ["Orange", "Black", "White"],
         genders: ["Male", "Female"],
-        style: "Jacket",
+        types: ["Jacket"],
         allowLogoUpload: true,
     },
 
     {
-        id: 27,
+        id: 30,
         name: "Server Uniform",
         price: 149000,
         description:
@@ -690,12 +756,12 @@ const uniforms = [
         ],
         colors: ["Black", "Yellow", "Red","Purple"],
         genders: ["Male","Female"],
-        style: "Shirt",
+        types: ["Shirt"],
         allowLogoUpload: true,
     },
 
     {
-        id: 28,
+        id: 31,
         name: "Beauty Salon / Spa Uniform",
         price: 399000,
         description:
@@ -716,12 +782,12 @@ const uniforms = [
         ],
         colors: ["Black", "Navy", "Mint","Be"],
         genders: ["Male","Female"],
-        style: "Set",
+        types: ["Set"],
         allowLogoUpload: true,
     },
 
     {
-        id: 29,
+        id: 32,
         name: "Delivery Driver Jacket",
         price: 139000,
         description:
@@ -742,13 +808,12 @@ const uniforms = [
             { size: "L", stock: 324 },
             { size: "XL", stock: 501 },
         ],
-        types:["Grab","Be","Xanh SM","ShopeeFood","Ahamove"],
-        style: "Jacket",
+        types:["Jacket", "Grab","Be","Xanh SM","ShopeeFood","Ahamove"],
         allowLogoUpload: false,
     },
 
     {
-        id: 30,
+        id: 33,
         name: "Restaurant Uniform",
         price: 279000,
         description:
@@ -770,12 +835,12 @@ const uniforms = [
         ],
         colors: ["Black", "White", "Red","Navy"],
         genders: ["Male","Female"],
-        style: "Set",
+        types: "Set",
         allowLogoUpload: true,
     },
 
     {
-        id: 31,
+        id: 34,
         name: "Custom Design Product",
         price: 450000,
         description:
@@ -792,7 +857,6 @@ const uniforms = [
             { size: "XL", stock: 3970 },
         ],
         types: ["On Request"],
-        style: "Custom",
         allowLogoUpload: true,
     },
 
