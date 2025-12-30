@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import wel from '../assets/welcome/Welcome.png'
 import startBtn from '../assets/welcome/start.svg'
+import '../styles/welcome.css';
 
 const Welcome: React.FC = () => {
     const navigate = useNavigate();
