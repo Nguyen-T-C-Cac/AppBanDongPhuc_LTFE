@@ -1,5 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useState} from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../components/redux/Store";
+
 import uniforms from "../../data/uniforms";
 import ProductCard from "../Products/ProductCard";
 import SidebarCategory from "../Products/SidebarCategory";
@@ -8,7 +11,12 @@ import IconMenu from "../../assets/icon/products/fi-br-menu-burger.svg"
 import IconUp from "../../assets/icon/products/fi-br-arrow-small-up.svg"
 import IconFilter from "../../assets/icon/products/auto_awesome.svg"
 
+
 const CategoryProducts = () => {
+    const keyword = useSelector(
+        (state: RootState) => state.search.keyword
+    );
+
     const {category} = useParams();
     const [openMenu, setOpenMenu] = useState(false);
     const [openStyle, setOpenStyle] = useState(false);
@@ -18,7 +26,10 @@ const CategoryProducts = () => {
             const mcategory = item.category === category;
             const mtype = selectedType ? item.types.includes(selectedType)
                 : true;
-            return mcategory && mtype;
+            const mKeyword = keyword
+                ? item.name.toLowerCase().includes(keyword.toLowerCase())
+                : true;
+            return mcategory && mtype && mKeyword;
         });
 
     return (

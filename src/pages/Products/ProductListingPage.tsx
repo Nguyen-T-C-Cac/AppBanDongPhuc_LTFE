@@ -4,16 +4,27 @@ import ProductGrid from './ProductGrid';
 import ProductTypeList from './ProductTypeList';
 import uniforms from "../../data/uniforms";
 
+import { useSelector } from "react-redux";
+import { RootState } from "../../components/redux/Store";
 import '../../styles/products.css'
 
 const Products: React.FC = () => {
+    const keyword = useSelector(
+        (state: RootState) => state.search.keyword
+    );
+
     const [selectedType, setSelectedType] = useState<string | null>(null);
 
-    const filteredProducts = selectedType
-        ? uniforms.filter(
-            u => u.types.includes(selectedType)
-        )
-        : uniforms;
+    const filteredProducts = uniforms.filter(
+            u => {
+                const mType = selectedType
+                    ? u.types.includes(selectedType)
+                    : true;
+                const mKeyword = keyword
+                    ? u.name.toLowerCase().includes(keyword.toLowerCase())
+                    : true;
+            return mType && mKeyword;
+            });
     return (
         <div className="products-page">
             <CategoryCard/>
