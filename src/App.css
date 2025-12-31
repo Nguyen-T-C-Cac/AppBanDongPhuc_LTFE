@@ -128,39 +128,4 @@
   filter: brightness(0) saturate(100%) invert(32%) sepia(87%) saturate(2254%)
   hue-rotate(202deg) brightness(98%) contrast(101%);
 }
-/*Welcome page*/
-.welcome-page {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.welcome-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Start button */
-.start-btn {
-  position: absolute;
-  bottom: 44px;
-  right: 24px;
-
-  width: 84px;
-  height: 84px;
-
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Hover / tap effect */
-.start-btn:hover {
-  transform: scale(1.08);
-}
-
-.start-btn:active {
-  transform: scale(0.95);
-}
 

@@ -5,13 +5,14 @@ import './App.css';
 /* Pages */
 import Welcome from './pages/Index';
 import Home from './pages/HomePage';
-import Products from './pages/ProductListingPage';
+import Products from './pages/Products/ProductListingPage';
 import Orders from './pages/OrdersPage';
 import Account from './pages/AccountPage';
 import Cart from './pages/CartPage';
 import MainLayout from './layouts/MainLayout';
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import CategoryProducts from "./pages/Products/CategoryProducts";
 
 function App() {
   return (
@@ -39,7 +40,12 @@ function App() {
                 </MainLayout>
               }
           />
-
+            <Route path="/products/:category"
+                   element={
+                       <MainLayout>
+                           <CategoryProducts />
+                       </MainLayout>
+                   } />
           <Route
               path="/orders"
               element={

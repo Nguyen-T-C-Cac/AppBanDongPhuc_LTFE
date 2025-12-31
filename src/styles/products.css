@@ -1,0 +1,338 @@
+.products-page {
+    padding: 12px;
+}
+
+/* SECTION TITLE */
+.section-title {
+    margin: 16px 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* category card */
+.category-card {
+    margin: 5px;
+    background: linear-gradient(
+            150deg,
+            #FEC471 13%,
+            #FAA549 40%,
+            #F69F24 65%,
+            #BF740C 100%
+    );
+    border-radius: 12px;
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.category-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #FE7329;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.category-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+.category-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+}
+
+/* type list*/
+.type-list {
+    background: #F89225;
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 8px;
+}
+
+.type-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: white;
+    font-size: 11px;
+    cursor: pointer;
+}
+.type-item.active {
+    background: rgba(255,255,255,0.2);
+}
+.type-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    display: flex;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.type-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+/* PRODUCT GRID */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+/* product card */
+.product-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.product-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 5px;
+
+}
+
+.product-name {
+    font-size: 12px;
+    margin: 6px 0 4px;
+    text-align: center;
+
+    /*giới hạn 2 dòng*/
+    display: -webkit-box;
+    -webkit-line-clamp: 2;      /* tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    min-height: calc(1.4em * 2);
+}
+
+.product-price {
+    font-size: 13px;
+    font-weight: 600;
+    color: #14056E;
+    text-align: center;
+
+    margin-top: auto;
+    margin-bottom: 6px;
+}
+
+.add-cart {
+    border: none;
+    background: none;
+    font-size: 16px;
+
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*Trang phân loại sản phẩm*/
+.category-page {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    position: relative;
+}
+.category-header {
+    background: white ;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    height: 40px;
+    padding: 2px 0;
+    margin: 5px 0px;
+}
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    top: 10px;
+    z-index: 98;
+}
+.category-sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+
+    width: 260px;
+    height: 100vh;
+    background: white;
+
+    margin-bottom: 5px;
+    padding: 16px;
+    z-index: 99;
+
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+.sidebar {
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-title{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.sidebar-item{
+    padding: 12px;
+    margin-bottom: 8px;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.sidebar-name {
+    font-size: 15px;
+    font-weight: 500;
+}
+.sidebar-item.active .iconNext{
+    filter: brightness(0) invert(1);
+}
+.sidebar-item.active {
+    background: #f89225;
+    color: white;
+}
+
+.sidebar-item.active .sidebar-name {
+    font-weight: 600;
+}
+.category-sidebar.open {
+    transform: translateX(0);
+}
+.menu-icon {
+    padding: 10px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.category-tabs {
+    display: flex;
+    margin-top: 4px;
+    overflow: hidden;
+}
+.tab {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    margin-bottom: 8px;
+    font-size: 12px;
+    background: #FFC78A;
+}
+
+.tab.active {
+    background: #f89225;
+    color: #fff;
+    font-weight: 600;
+}
+.category-styles {
+    position: sticky;
+    top: 52px; /* sát header gốc app */
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.filter-icon {
+    padding: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.style-list {
+    display: flex;
+    gap: 8px;
+
+    border-radius: 24px;
+    background: #fff;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+.style-list.closed {
+    max-width: 0;
+    opacity: 0;
+    padding: 0;
+    pointer-events: none;
+}
+.style-list.open {
+    max-width: 300px;
+    opacity: 1;
+    padding: 6px 10px;
+}
+
+.style-item {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #14056E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.style-item img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+.scroll-top {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #4f46e5;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}

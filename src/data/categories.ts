@@ -1,35 +1,33 @@
-// src/data/categories.ts
 
 export const categories = [
     {
-        id: 'school',
-        name: 'Đồng phục Học đường',
+        id: 1,
+        name: 'School',
         image: '/assets/categories/school.jpg',
     },
     {
-        id: 'factory',
-        name: 'Đồng phục Công sở',
+        id: 2,
+        name: 'Company',
         image: '/assets/categories/company.jpg',
     },
     {
-        id: 'sport',
-        name: 'Đồng phục thể thao',
+        id: 3,
+        name: 'Sport',
         image: '/assets/categories/sport.jpg',
     },
     {
-        id: 'factory',
-        name: 'Đồng phục nhà máy',
+        id: 4,
+        name: 'Factory',
         image: '/assets/categories/factory.jpg',
-        description: 'Tạp dề, áo bếp, đồng phục phục vụ'
     },
     {
-        id: 'service',
-        name: 'Đồng phục dịch vụ',
+        id: 5,
+        name: 'Service',
         image: '/assets/categories/service.jpg',
     },
     {
-        id: 'event',
-        name: 'Đồng phục sự kiện',
+        id: 6,
+        name: 'Event',
         image: '/assets/categories/event.jpg',
     }
 ];
