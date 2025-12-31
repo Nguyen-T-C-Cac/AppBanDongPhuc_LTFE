@@ -23,6 +23,7 @@ const SidebarCategory = () => {
                     >
                         <span className="sidebar-name">{cat.name}</span>
                         <img src={IconNext} className="iconNext"/>
+
                     </div>
                 );
             })}

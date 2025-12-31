@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import googleIcon from "../assets/icon/login/google.png";
 import facebookIcon from "../assets/icon/login/facebook.png";
 import { accountData } from "../data/account";
