@@ -1,0 +1,16 @@
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#root::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url('../assets/welcome/nen.png');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
