@@ -3,7 +3,7 @@ import '../../styles/cart.css'
 import trash from "../../assets/icon/cart/fi-rr-trash.svg";
 import {CartItem as CartItemType} from "../../types/CartType"
 import {useDispatch} from "react-redux";
-import {removeFromCart} from "../redux/Cart";
+import {removeFromCart, updateSizeQuantity, updateLogoCustomization} from "../redux/Cart";
 
 interface Props {
     item: CartItemType;
@@ -17,6 +17,13 @@ const CartItem: React.FC<Props> = ({item}) => {
         (sum, s) => sum + s.quantity,
         0
     );
+    const [logoData, setLogoData] = useState({
+        logoType: "No Logo",
+        positions: [] as string[],
+        width: "",
+        height: "",
+        notes: ""
+    });
 
     return (
         <div className="cart-item">
@@ -59,9 +66,21 @@ const CartItem: React.FC<Props> = ({item}) => {
                         </div>
 
                         <div className="quantity-control">
-                            <button>-</button>
+                            <button onClick={() =>
+                                dispatch(updateSizeQuantity({
+                                    id: item.id,
+                                    size: s.size,
+                                    delta: -1
+                                }))
+                            }>-</button>
                             <span>{s.quantity}</span>
-                            <button>+</button>
+                            <button onClick={() =>
+                                dispatch(updateSizeQuantity({
+                                    id: item.id,
+                                    size: s.size,
+                                    delta: 1
+                                }))
+                            }>+</button>
                         </div>
                     </div>
                 ))}
@@ -82,7 +101,10 @@ const CartItem: React.FC<Props> = ({item}) => {
                             <div className="section-label">Logo type</div>
                             <div className="logo-grid-3">
                                 <label className="radio-box">
-                                    <input type="radio" name="logoType" defaultChecked />
+                                    <input type="radio" name="logoType" checked={logoData.logoType === "Printing"}
+                                           onChange={() =>
+                                               setLogoData(prev => ({ ...prev, logoType: "Printing" }))
+                                           } />
                                     <span>No Logo</span>
                                 </label>
                                 <label className="radio-box">
@@ -153,7 +175,8 @@ const CartItem: React.FC<Props> = ({item}) => {
                         {/* Notes */}
                         <div className="logo-section">
                             <div className="section-label">Notes</div>
-                            <textarea placeholder="" className="logo-notes" />
+                            <textarea placeholder="" className="logo-notes" value={logoData.notes}
+                                      onChange={e => setLogoData({ ...logoData, notes: e.target.value })}/>
                         </div>
 
                         {/* Footer Buttons */}
@@ -161,7 +184,13 @@ const CartItem: React.FC<Props> = ({item}) => {
                             <button className="cancel-btn" onClick={() => setShowLogoModal(false)}>
                                 Cancel
                             </button>
-                            <button className="save-btn" onClick={() => setShowLogoModal(false)}>
+                            <button className="save-btn" onClick={() => {
+                                dispatch(updateLogoCustomization({
+                                    id: item.id,
+                                    logoCustomization: logoData
+                                }));
+                                setShowLogoModal(false);
+                            }}>
                                 Save
                             </button>
                         </div>

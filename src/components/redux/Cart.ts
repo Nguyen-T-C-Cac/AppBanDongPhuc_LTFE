@@ -83,28 +83,40 @@ const cartSlice = createSlice({
                 item => item.id !== action.payload
             );
         },
-        updateGender(state, action) {
-            const { id, gender } = action.payload;
+        updateSizeQuantity(
+            state,
+            action: PayloadAction<{
+                id: number;
+                size: string;
+                delta: 1 | -1;
+            }>
+        ) {
+            const { id, size, delta } = action.payload;
             const item = state.items.find(i => i.id === id);
-            if (item) item.gender = gender;
+            if (!item) return;
+
+            const sizeItem = item.sizes.find(s => s.size === size);
+            if (!sizeItem) return;
+
+            sizeItem.quantity = Math.max(0, sizeItem.quantity + delta);
         },
-        updateSize(state, action) {
-            const { id, size } = action.payload;
+
+        updateLogoCustomization(
+            state,
+            action: PayloadAction<{
+                id: number;
+                logoCustomization: any;
+            }>
+        ) {
+            const { id, logoCustomization } = action.payload;
             const item = state.items.find(i => i.id === id);
-            if (item) item.sizes[size] = size;
+            if (item) {
+                item.logoType = logoCustomization;
+            }
         },
-        updateQuantity(state, action) {
-            const { id, quantity } = action.payload;
-            const item = state.items.find(i => i.id === id);
-            if (item) item.sizes[quantity] = quantity;
-        },
-        updateLogoType(state, action) {
-            const { id, logoType } = action.payload;
-            const item = state.items.find(i => i.id === id);
-            if (item) item.logoType = logoType;
-        }
+
     },
 });
 
-export const { addToCart, removeFromCart, updateGender, updateSize, updateQuantity, updateLogoType} = cartSlice.actions;
+export const { addToCart, removeFromCart, updateSizeQuantity, updateLogoCustomization} = cartSlice.actions;
 export default cartSlice.reducer;
