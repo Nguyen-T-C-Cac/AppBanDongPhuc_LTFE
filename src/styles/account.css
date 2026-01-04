@@ -6,7 +6,6 @@ body {
     max-width: 420px;
     margin: 5px auto;
     font-family: Arial, sans-serif;
-
 }
 /* ===== PROFILE ===== */
 .account-profile {
@@ -15,9 +14,13 @@ body {
     gap: 16px;
     padding: 15px;
     border-radius: 12px;
-    margin: 16px auto;
+    margin: 10px auto;
 }
-
+.avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .account-profile .avatar {
     width: 64px;
     height: 64px;
@@ -26,6 +29,29 @@ body {
     margin-right: 12px;
     border: 1px solid #ddd;
 }
+.change-avatar-btn {
+    margin-top: 10px;           /* cách avatar */
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+
+    background-color: #fbe5ca;  /* cam chủ đạo */
+    color: #333;
+    border: 1px solid #fa912d;
+    border-radius: 555px;       /* bo tròn đẹp */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-avatar-btn:hover {
+    background-color: #e86d00;  /* cam đậm hơn */
+    transform: translateY(-1px);
+}
+
+.change-avatar-btn:active {
+    transform: translateY(0);
+}
+
 .account-profile .info h3 {
     margin: 0 auto;
     font-size: 16px;
@@ -78,25 +104,25 @@ body {
     padding: 16px;
     border-radius: 12px;
     border-top: none;
-    margin-top: 0; /* dính sát tabs */
-    margin-bottom: 16px;
+    margin-top: 0;
 }
 .address-text {
-    font-weight: 600; /* in đậm đẹp, không quá gắt */
+    font-weight: 600;
 }
 /* header của mỗi section */
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
 }
 
 .section-header h4 {
-    margin: 0;
     font-size: 12px;
 }
-
+.section-header.info {
+    margin-top: 20px; /* tăng/giảm tuỳ bạn: 16px – 24px */
+}
 .section-header button {
     border: none;
     color: #2f80ed;
@@ -129,9 +155,51 @@ body {
     justify-content: center;
     font-size: 16px;
     color: #888;
-    margin: 0 auto;                 /* căn giữa theo chiều ngang */
+    margin: 0 auto;
     border: 2px solid #f2c94c;
 }
+
+
+.address-input {
+    width: 100%;
+    min-height: 70px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    resize: none;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.edit-actions .save-btn {
+    background-color: #2f80ed;
+    color: #fff;              /* chữ trắng */
+    border: none;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.edit-actions .save-btn:hover {
+    background-color: #1c6ed5;
+}
+
+.edit-actions .cancel-btn {
+    background-color: #eee;
+    color: #333;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
 
 /* ===== SHIPPING ADDRESS ===== */
 .purchase-history {
@@ -238,15 +306,15 @@ body {
 }
 .order-footer {
     border-top: 2px solid #000;
-    display: flex;                /* container chính dùng flex */
-    justify-content: flex-end;    /* đẩy các phần tử con sang phải */
-    padding: 16px;                /* padding nếu muốn */
-    gap: 8px;                     /* khoảng cách giữa các phần tử con (nếu có nhiều hơn 1) */
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+    gap: 8px;
 }
 
 .order-actions {
-    display: flex;                /* nhóm nút cũng dùng flex để xếp ngang */
-    gap: 8px;                     /* khoảng cách giữa 2 nút */
+    display: flex;
+    gap: 8px;
 }
 .order-actions button {
     padding: 6px 12px;

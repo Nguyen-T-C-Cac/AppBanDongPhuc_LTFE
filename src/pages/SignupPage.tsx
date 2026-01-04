@@ -25,9 +25,9 @@ function SignupPage() {
         const newUser = {
             username: userName.trim(),
             email: email.trim(),
-            password,          // ✅ cần cho login mock
-            phone: "",         // chưa nhập
-            address: "",       // chưa nhập
+            password,
+            phone: "",
+            address: "",
             avatar: "",
             isLogin: false,
         };

@@ -6,126 +6,228 @@ import { accountData } from "../data/account";
 
 function Account() {
     const navigate = useNavigate();
+
     const [user, setUser] = useState<any>(null);
     const [activeTab, setActiveTab] = useState("info");
     const [paymentMethod, setPaymentMethod] = useState("bank");
+
+    const [isEditingContact, setIsEditingContact] = useState(false);
+    const [contactForm, setContactForm] = useState({
+        phone: "",
+        email: "",
+    });
+    const [isEditingAddress, setIsEditingAddress] = useState(false);
+    const [addressForm, setAddressForm] = useState({
+        text: "",
+    });
+
+
     const DEFAULT_AVATAR = "/images/avtAccount/avt.png";
+
+    /* ================= INIT USER ================= */
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-        if (!storedUser) {
-            setUser({
+
+        // 👉 CHƯA ĐĂNG KÝ → DÙNG MOCK
+        if (!storedUser || !storedUser.isLogin) {
+            const mockUser = {
                 username: accountData.user.name,
                 email: accountData.user.email,
                 avatar: accountData.user.avatar,
-                address: { text: accountData.address.text },
-                contact: { phone: accountData.contact.phone },
+                address: accountData.address,
+                contact: accountData.contact,
                 payment: accountData.payment,
                 isMock: true,
+            };
+
+            setUser(mockUser);
+            setAddressForm({
+                text: mockUser.address?.text || "",
             });
-            setPaymentMethod(accountData.payment);
-            return;
-        }
-        if (storedUser.isLogin) {
-            setUser(storedUser);
-            setPaymentMethod(storedUser.payment || "bank");
+
+            setContactForm({
+                phone: mockUser.contact.phone,
+                email: mockUser.email,
+            });
+            setPaymentMethod(mockUser.payment);
             return;
         }
 
-        // 👉 CÓ USER NHƯNG CHƯA LOGIN → VẪN CHO XEM MOCK
-        setUser({
-            username: accountData.user.name,
-            email: accountData.user.email,
-            avatar: accountData.user.avatar,
-            address: accountData.address,
-            contact: accountData.contact,
-            payment: accountData.payment,
-            isMock: true,
+        setUser(storedUser);
+        setAddressForm({
+            text: storedUser.address?.text || "",
         });
 
-        setPaymentMethod(accountData.payment);
-        /*if (storedUser && storedUser.isLogin === false) {
-            navigate("/login");
-            return;
-        }*/
-        setUser(storedUser);
-    }, [navigate]);
 
+        setContactForm({
+            phone: storedUser.contact?.phone || "",
+            email: storedUser.email || "",
+        });
+        setPaymentMethod(storedUser.payment || "bank");
+    }, []);
+
+    /* ================= AVATAR ================= */
+    const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const updatedUser = { ...user, avatar: reader.result };
+            setUser(updatedUser);
+
+            if (!user.isMock) {
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+            }
+        };
+        reader.readAsDataURL(file);
+    };
+
+    /* ================= CONTACT EDIT ================= */
+    const handleSaveContact = () => {
+        const updatedUser = {
+            ...user,
+            email: contactForm.email,
+            contact: {
+                ...user.contact,
+                phone: contactForm.phone,
+            },
+        };
+
+        setUser(updatedUser);
+
+        if (!user.isMock) {
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+        }
+
+        setIsEditingContact(false);
+    };
+
+    const handleCancelEdit = () => {
+        setContactForm({
+            phone: user.contact?.phone || "",
+            email: user.email || "",
+        });
+        setIsEditingContact(false);
+    };
+
+    /* ================= LOGOUT ================= */
     const handleLogout = () => {
         const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-
         if (storedUser) {
             localStorage.setItem(
                 "user",
                 JSON.stringify({ ...storedUser, isLogin: false })
             );
         }
-
         navigate("/login");
+    };
+    const handleSaveAddress = () => {
+        const updatedUser = {
+            ...user,
+            address: {
+                ...user.address,
+                text: addressForm.text,
+            },
+        };
+
+        setUser(updatedUser);
+
+        if (!user.isMock) {
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+        }
+
+        setIsEditingAddress(false);
+    };
+
+    const handleCancelAddress = () => {
+        setAddressForm({
+            text: user.address?.text || "",
+        });
+        setIsEditingAddress(false);
     };
 
     if (!user) return null;
-    console.log("accountData:", accountData);
 
     return (
         <div className="account-page">
             {/* PROFILE */}
             <section className="account-profile">
-                <img
-                    className="avatar"
-                    src={user.avatar && user.avatar.trim() !== "" ? user.avatar : DEFAULT_AVATAR}
-                    alt="avatar"
-                />
+                <div className="avatar-wrapper">
+                    <img className="avatar"
+                         src={user.avatar && user.avatar.trim() !== "" ? user.avatar : DEFAULT_AVATAR}
+                         alt="avatar"
+                    />
+
+                    <input type="file" accept="image/*" id="avatarInput" style={{ display: "none" }} onChange={handleChangeAvatar}/>
+                    <button className="change-avatar-btn" onClick={() => document.getElementById("avatarInput")?.click()}>
+                        Change avatar
+                    </button>
+                </div>
+
+
                 <div className="info">
                     <h3>{user.username}</h3>
                     <p>{user.email}</p>
-                    <button className="logout-btn" onClick={handleLogout}>
-                        Log out
-                    </button>
+                    <button className="logout-btn" onClick={handleLogout}>Log out</button>
                 </div>
             </section>
             {/* TABS */}
             <section className="account-tabs">
-        <span
-            className={`tab ${activeTab === "info" ? "active" : ""}`}
-            onClick={() => setActiveTab("info")}
-        >
-          Information
-        </span>
-                <span
-                    className={`tab ${activeTab === "history" ? "active" : ""}`}
-                    onClick={() => setActiveTab("history")}
-                >
-          Purchase History
+                <span className={`tab ${activeTab === "info" ? "active" : ""}`}
+                      onClick={() => setActiveTab("info")}>Information
+                </span>
+                <span className={`tab ${activeTab === "history" ? "active" : ""}`}
+                      onClick={() => setActiveTab("history")}>Purchase History
         </span>
             </section>
 
             {/* ACCOUNT INFO */}
             {activeTab === "info" && (
                 <section className="account-section">
-                    {/* SHIPPING ADDRESS */}
-                    <div className="section-header">
+                    <div className="section-header address">
                         <h4>Shipping Address</h4>
-                        <button>Edit</button>
-                    </div>
-                    <p className="address-text">
-                        {user.address?.text || "Chưa nhập địa chỉ"}
-                    </p>
+                        {!isEditingAddress ? (
+                            <button onClick={() => setIsEditingAddress(true)}>Edit</button>
+                        ) : (
+                            <div className="edit-actions">
+                                <button className="save-btn" onClick={handleSaveAddress}>Save</button>
+                                <button className="cancel-btn" onClick={handleCancelAddress}>Cancel</button>
+                            </div>
+                        )}
 
-                    {/* CONTACT INFO */}
-                    <div className="section-header" style={{ marginTop: "16px" }}>
-                        <h4>Contact Information</h4>
-                        <button>Edit</button>
                     </div>
-                    <input
-                        className="contact-input"
-                        value={user.contact?.phone || "Chưa nhập số điện thoại"}
-                        readOnly
+
+                    {!isEditingAddress ? (
+                        <p className="address-text">
+                            {user.address?.text || "Chưa nhập địa chỉ"}
+                        </p>
+                    ) : (
+                        <textarea className="address-input" value={addressForm.text}
+                            onChange={(e) => setAddressForm({ text: e.target.value })}
+                            placeholder="Enter your shipping address"
+                        />
+                    )}
+                    <img
+                        className="map-placeholder"
+                        src={accountData.address.map}
+                        alt="map"
                     />
-                    <input
-                        className="contact-input"
-                        value={user.email}
-                        readOnly
-                    />
+                    <div className="section-header info">
+                        <h4>Contact Information</h4>
+                        {!isEditingContact ? (
+                            <button onClick={() => setIsEditingContact(true)}>Edit</button>
+                        ) : (
+                            <div className="edit-actions">
+                                <button className="save-btn" onClick={handleSaveContact}>Save</button>
+                                <button className="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+                            </div>
+                        )}
+                    </div>
+                    <input className="contact-input" value={contactForm.phone} readOnly={!isEditingContact}
+                        onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}/>
+                    <input className="contact-input" value={contactForm.email} readOnly={!isEditingContact}
+                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}/>
                 </section>
             )}
 
