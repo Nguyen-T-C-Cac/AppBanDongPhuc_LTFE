@@ -7,9 +7,9 @@ const ProductCard = ({ name, price, image }: any) => {
             <p className="product-name">{name}</p>
             <span className="product-price">{price.toLocaleString()} VND</span>
 
-            <div className="add-cart">
+            {/*<div className="add-cart">
                 <CartIcon width="18px" height="18px"/>
-            </div>
+            </div>*/}
         </div>
     );
 };

@@ -1,0 +1,44 @@
+.pageHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #F89225;
+    font-size: 15px;
+    height: 70px;
+    font-weight: bold;
+    padding: 0px 16px;
+    z-index: 1000;
+}
+.backBtn {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-right: 12px;
+}
+.title {
+    flex: 1;
+}
+
+.countBadge {
+    position: absolute;
+    right: 16px;
+
+    min-width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.5px solid white;
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: bold;
+}

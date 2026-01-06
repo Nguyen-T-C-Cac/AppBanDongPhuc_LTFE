@@ -65,10 +65,7 @@ function App() {
           />
             <Route
                 path="/cart"
-                element={
-                    <MainLayout>
-                        <Cart />
-                    </MainLayout>
+                element={<Cart />
                 }
             />
             <Route>

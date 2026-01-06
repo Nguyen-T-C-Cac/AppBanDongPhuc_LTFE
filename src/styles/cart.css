@@ -1,0 +1,422 @@
+.cart{
+    padding-top: 70px;
+    padding-bottom: 200px;
+    min-height: 100vh;
+}
+/* Container chính */
+.cart-item {
+    background: #fff;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.cart-main-info {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.cart-checkbox{
+    display: flex;
+    align-items: center;
+    height: 80px;
+}
+
+.cart-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.cart-content {
+    flex: 1; /* Chiếm hết phần còn lại */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cart-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.cart-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #333;
+}
+
+.delete-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+.cart-price {
+    font-size: 13px;
+    color: #14056E;
+    font-weight: 700;
+}
+
+.cart-attributes {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.tag {
+    background: #f3f4f6;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #555;
+    white-space: nowrap;
+}
+
+/* đường kẻ phân cách */
+.separator {
+    height: 1px;
+    background-color: #eee;
+    margin: 12px 0;
+}
+
+.cart-sizes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cart-size-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+.size-label {
+    font-size: 13px;
+    color: #333;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    padding: 2px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.quantity-control button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    color: #14056E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-control span {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.cart-footer {
+    text-align: right;
+    font-size: 13px;
+    margin-top: 10px;
+    color: #666;
+    border-top: 1px dashed #eee;
+    padding-top: 8px;
+}
+.cart-total{
+    display: flex;
+    align-items: center;
+}
+/* logo modal */
+.logo-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.logo-modal {
+    background: #fff;
+    max-width: 360px;
+    border-radius: 16px;
+    padding: 20px;
+    animation: slideUp 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.logo-modal-title {
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: #000;
+}
+
+.logo-section {
+    margin-bottom: 16px;
+}
+
+.section-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.logo-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cột cho Logo Type */
+    gap: 8px;
+}
+
+.logo-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 8px; /* Gap dọc 10, gap ngang 8 */
+}
+
+.radio-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #444;
+    cursor: pointer;
+}
+
+/* Chỉnh màu nút radio/checkbox */
+.radio-box input[type="radio"],
+.radio-box input[type="checkbox"] {
+    accent-color: #ff9f43;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* Size Section  */
+.logo-size-row {
+    display: flex;
+    gap: 20px;
+}
+
+.size-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.size-input-group span {
+    font-size: 13px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.size-input-group input {
+    width: 100%;
+    background: #e5e7eb;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 13px;
+    outline: none;
+    text-align: center;
+}
+.size-input-group input:focus {
+    background: #d1d5db;
+}
+
+/* Upload Button */
+.upload-btn {
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #e5e7eb;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #444;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.upload-btn:hover {
+    background: #d1d5db;
+}
+
+.logo-notes {
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 4px;
+    resize: none;
+    font-family: inherit;
+}
+.logo-notes:focus {
+    border-color: #ff9f43;
+    outline: none;
+}
+
+.logo-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.cancel-btn {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    color: #888;
+    cursor: pointer;
+    font-weight: 500;
+}
+.cancel-btn:hover {
+    color: #333;
+}
+
+.save-btn {
+    background: #ff884d;
+    border: none;
+    padding: 8px 24px;
+    font-size: 14px;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(255, 136, 77, 0.4);
+}
+.save-btn:hover {
+    background: #ff7530;
+}
+/* Thông tin tính tiền*/
+.cart-bottom-section {
+    position: fixed;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: #fff;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.cart-summary-info {
+    background: #fff;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.summary-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-weight: 500;
+}
+
+.summary-label img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+}
+
+.summary-value {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.summary-value.red {
+    color: #FE1818;
+}
+
+.summary-value.green {
+    color: #33C972;
+}
+
+.cart-action-bar {
+    background: #ff9f43;
+    padding: 0 16px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.select-all-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.select-all-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    background: #fff;
+}
+
+/* Nút Checkout */
+.checkout-btn {
+    background: #FE7329;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
