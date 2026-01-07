@@ -111,6 +111,9 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+
+    text-decoration: none;
+    color: #111;
 }
 
 .product-card img {

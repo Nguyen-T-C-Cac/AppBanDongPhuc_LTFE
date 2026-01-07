@@ -3,7 +3,7 @@ import CategoryCard from './CategoryCard';
 import ProductGrid from './ProductGrid';
 import ProductTypeList from './ProductTypeList';
 import uniforms from "../../data/uniforms";
-
+import { Product } from "../../types/ProductType";
 import { useSelector } from "react-redux";
 import { RootState } from "../../components/redux/Store";
 import '../../styles/products.css'
@@ -37,7 +37,7 @@ const Products: React.FC = () => {
             <div className="section-title">
                 {selectedType ? selectedType.toUpperCase() : "MOST POPULAR UNIFORMS"}
             </div>
-            <ProductGrid products={filteredProducts}/>
+            <ProductGrid products={filteredProducts as Product[]} />
 
         </div>
     );

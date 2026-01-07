@@ -1,16 +1,19 @@
 import React from "react";
-import uniforms from '../../data/uniforms';
-import ProductCard from './ProductCard';
+import { Product } from "../../types/ProductType";
+
+import ProductCard from "./ProductCard";
+
 interface Props {
-    products: any[];
+    products: Product[];
 }
 
-const ProductGrid=({ products }: Props) => {
+const ProductGrid: React.FC<Props> = ({ products }) => {
     return (
         <div className="product-grid">
             {products.map(product => (
                 <ProductCard
                     key={product.id}
+                    id={product.id}           // thêm dòng này
                     name={product.name}
                     price={product.price}
                     image={product.images[0]}

@@ -14,6 +14,8 @@ import MainLayout from './layouts/MainLayout';
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import CategoryProducts from "./pages/Products/CategoryProducts";
+import ProductDetail from './pages/ProductDetailPage';
+import BackLayout from "./layouts/BackLayout";
 
 function App() {
   return (
@@ -24,58 +26,15 @@ function App() {
           <Route path="/" element={<Welcome />} />
 
           {/* Các trang trong app – có bottom navbar */}
-          <Route
-              path="/home"
-              element={
-                <MainLayout>
-                  <Home />
-                </MainLayout>
-              }
-          />
-
-          <Route
-              path="/products"
-              element={
-                <MainLayout>
-                  <Products />
-                </MainLayout>
-              }
-          />
-            <Route path="/products/:category"
-                   element={
-                       <MainLayout>
-                           <CategoryProducts />
-                       </MainLayout>
-                   } />
-          <Route
-              path="/orders"
-              element={
-                <MainLayout>
-                  <Orders />
-                </MainLayout>
-              }
-          />
-
-          <Route
-              path="/account"
-              element={
-                <MainLayout>
-                  <Account />
-                </MainLayout>
-              }
-          />
-            <Route
-                path="/cart"
-                element={<Cart />
-                }
-            />
-            <Route>
-                <Route path="/login" element={<LoginPage />} />
-            </Route>
-            <Route>
-                <Route path="/signup" element={<SignupPage />} />
-            </Route>
-
+          <Route path="/home" element={<MainLayout><Home /></MainLayout>}/>
+          <Route path="/products" element={<MainLayout><Products /></MainLayout>}/>
+          <Route path="/products/:category" element={<MainLayout><CategoryProducts /></MainLayout>} />
+            <Route path="/product/:id" element={<BackLayout><ProductDetail /></BackLayout>} />
+            <Route path="/orders" element={<MainLayout><Orders /></MainLayout>}/>
+          <Route path="/account" element={<BackLayout> <Account /> </BackLayout>}/>
+          <Route path="/cart" element={<Cart />}/>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
   );
