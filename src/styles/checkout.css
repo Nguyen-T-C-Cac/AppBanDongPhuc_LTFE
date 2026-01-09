@@ -1,0 +1,20 @@
+.checkout-page{
+    display: flex;
+    padding-top: 70px;
+}
+.section-block{
+    background: white;
+    padding: 15px;
+    margin-top: 10px;
+}
+.shippingAddress{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.btnchange{
+    border: 1px solid #ccc;
+    background: none;
+    padding: 2px 8px;
+    fontSize: 12px;
+}
