@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const WelcomeLayout = () => {
+const LoginLayout = () => {
     return (
         <div className="welcome-layout">
             <Outlet />
@@ -8,4 +8,4 @@ const WelcomeLayout = () => {
     );
 };
 
-export default WelcomeLayout;
+export default LoginLayout;

@@ -56,14 +56,16 @@ function Account() {
             navigate("/login");
             return;
         }
-
-        // 🔥 nếu là mock account → merge thêm account.ts
+        const defaultUser =
+            accountData.users.find(u => u.id === storedUser?.id)
+            ?? accountData.users[0];
         const rawUser = storedUser.isMock
             ? {
+
                 ...accountData,
                 ...storedUser,
-                address: storedUser.address ?? accountData.address,
-                contact: storedUser.contact ?? accountData.contact,
+                address: storedUser?.address ?? defaultUser.address,
+                contact: storedUser?.contact ?? defaultUser.contact,
             }
             : storedUser;
 
