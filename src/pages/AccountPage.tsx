@@ -2,35 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/account.css";
 import { accountData } from "../data/account";
-import {User} from "../types/Account";
+import {User} from "../types/AccountType";
 import defaultMap from "../assets/images/ImageHome/avarta/map2.png";
 import {orderHistory} from "../data/orderHistory";
-export const normalizeUser = (raw: any): User => ({
-    username: raw.username ?? raw.user?.name ?? "",
-    email: raw.email ?? raw.user?.email ?? "",
-    avatar: raw.avatar ?? raw.user?.avatar ?? "/images/avt.png",
+import {getCurrentUser, saveCurrentUser} from "../utils/accountUtil";
 
-    address: {
-        text: raw.address?.text ?? "",
-        map:
-            raw.address?.map &&
-            raw.address.map.trim() !== ""
-                ? raw.address.map
-                : defaultMap,
-    },
-
-    contact: {
-        phone: raw.contact?.phone ?? "",
-    },
-
-    payment: raw.payment ?? "bank",
-    isLogin: raw.isLogin ?? true,
-});
 function Account() {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User| null>(null);
+
     const [paymentMethod, setPaymentMethod] = useState("bank");
+    const [activeTab, setActiveTab] = useState("info");
 
     const [isEditingContact, setIsEditingContact] = useState(false);
     const [contactForm, setContactForm] = useState({
@@ -41,43 +24,26 @@ function Account() {
     const [addressForm, setAddressForm] = useState({
         text: "",
     });
-    const DEFAULT_MAP = "/images/ImageHome/avarta/map2.png"
+    //const DEFAULT_MAP = "/images/ImageHome/avarta/map2.png"
     const DEFAULT_AVATAR = "/images/avtAccount/avt.png";
-    const [activeTab, setActiveTab] = useState("info");
     const deliveredOrders = orderHistory.filter((orderHistory: { status: string; }) => orderHistory.status === "Delivered");
 
     /* ================= INIT USER ================= */
     useEffect(() => {
-        const storedUser = JSON.parse(
-            localStorage.getItem("currentUser") || "null"
-        );
-
-        if (!storedUser || !storedUser.isLogin) {
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
             navigate("/login");
             return;
         }
-        const defaultUser =
-            accountData.users.find(u => u.id === storedUser?.id)
-            ?? accountData.users[0];
-        const rawUser = storedUser.isMock
-            ? {
+        setUser(currentUser);
 
-                ...accountData,
-                ...storedUser,
-                address: storedUser?.address ?? defaultUser.address,
-                contact: storedUser?.contact ?? defaultUser.contact,
-            }
-            : storedUser;
-
-        const user = normalizeUser(rawUser);
-
-        setUser(user);
-        setAddressForm({ text: user.address.text });
+        // Fill form
+        setAddressForm({ text: currentUser.activeAddress.text });
         setContactForm({
-            phone: user.contact.phone,
-            email: user.email,
+            phone: currentUser.contact.phone,
+            email: currentUser.email,
         });
-        setPaymentMethod(user.payment);
+        setPaymentMethod(currentUser.payment);
     }, []);
     /* ================= AVATAR ================= */
     const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,6 +63,7 @@ function Account() {
 
     /* ================= CONTACT EDIT ================= */
     const handleSaveContact = () => {
+        if (!user) return;
         const updatedUser = {
             ...user,
             email: contactForm.email,
@@ -108,14 +75,12 @@ function Account() {
 
         setUser(updatedUser);
 
-        if (!user.isMock) {
-            localStorage.setItem("user", JSON.stringify(updatedUser));
-        }
-
+        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
         setIsEditingContact(false);
     };
 
     const handleCancelEdit = () => {
+        if (!user) return;
         setContactForm({
             phone: user.contact?.phone || "",
             email: user.email || "",
@@ -125,37 +90,27 @@ function Account() {
 
     /* ================= LOGOUT ================= */
     const handleLogout = () => {
-        const storedUser = JSON.parse(localStorage.getItem("user") || "null");
-        if (storedUser) {
-            localStorage.setItem(
-                "user",
-                JSON.stringify({ ...storedUser, isLogin: false })
-            );
-        }
+        localStorage.removeItem("currentUser");
         navigate("/login");
     };
     const handleSaveAddress = () => {
-        const updatedUser = {
+        if (!user) return;
+        const updatedUser : User = {
             ...user,
-            address: {
-                ...user.address,
-                text: addressForm.text,
-            },
+            activeAddress: {
+                ...user.activeAddress,
+                text: addressForm.text
+            }
         };
 
         setUser(updatedUser);
-
-        if (!user.isMock) {
-            localStorage.setItem("user", JSON.stringify(updatedUser));
-        }
-
+        saveCurrentUser(updatedUser);
         setIsEditingAddress(false);
     };
 
     const handleCancelAddress = () => {
-        setAddressForm({
-            text: user.address?.text || "",
-        });
+        if (!user) return;
+        setAddressForm({ text: user.activeAddress.text });
         setIsEditingAddress(false);
     };
 
@@ -209,34 +164,59 @@ function Account() {
                         )}
 
                     </div>
-
-                    {!isEditingAddress ? (
-                        <p className="address-text">
-                            {user.address.text || "No address provided"}
-                        </p>
-                    ) : (
-                        <textarea className="address-input" value={addressForm.text}
-                                  onChange={(e) => setAddressForm({ text: e.target.value })}
-                                  placeholder="Enter your shipping address"
-                        />
-                    )}
-                    <img className="map-placeholder" src={user.address.map} />
-
-                    <div className="section-header">
-                        <h4>Contact Information</h4>
-                        {!isEditingContact ? (
-                            <button onClick={() => setIsEditingContact(true)}>Edit</button>
+            {/* 3. SHIPPING ADDRESS */}
+                    <div className="address-content-wrapper">
+                        {!isEditingAddress ? (
+                            <p className="address-text">
+                                {user.activeAddress.text || "No address provided"}
+                            </p>
                         ) : (
-                            <div className="edit-actions">
-                                <button className="save-btn" onClick={handleSaveContact}>Save</button>
-                                <button className="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
-                            </div>
+                            <textarea
+                                className="address-input"
+                                value={addressForm.text}
+                                onChange={(e) => setAddressForm({ text: e.target.value })}
+                                placeholder="Enter your shipping address"
+                            />
                         )}
+
+                        <img className="map-placeholder" src={user.activeAddress.map} alt="map" />
                     </div>
-                    <input className="contact-input" value={contactForm.phone} readOnly={!isEditingContact}
-                           onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}/>
-                    <input className="contact-input" value={contactForm.email} readOnly={!isEditingContact}
-                           onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}/>
+
+            {/* 4. CONTACT INFO */}
+            <div className="account-section">
+                <div className="section-header">
+                    <h4>Contact Information</h4>
+                    {!isEditingContact ? (
+                        <button onClick={() => setIsEditingContact(true)}>Edit</button>
+                    ) : (
+                        <div className="edit-actions">
+                            <button className="save-btn" onClick={handleSaveContact}>Save</button>
+                            <button className="cancel-btn" onClick={handleCancelEdit}>Cancel</button>
+                        </div>
+                    )}
+                </div>
+
+                <div className="contact-fields">
+                    <div className="field-group">
+                        <label>Phone:</label>
+                        <input
+                            className="contact-input"
+                            value={contactForm.phone}
+                            readOnly={!isEditingContact}
+                            onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                        />
+                    </div>
+                    <div className="field-group">
+                        <label>Email:</label>
+                        <input
+                            className="contact-input"
+                            value={contactForm.email}
+                            readOnly={!isEditingContact}
+                            onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                        />
+                    </div>
+                </div>
+            </div>
                 </section>
             )}
 
