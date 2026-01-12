@@ -19,7 +19,7 @@ function LoginPage() {
 
         const accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
 
-        // 1️⃣ ƯU TIÊN account user đăng ký (localStorage)
+        // ƯU TIÊN account user đăng ký (localStorage)
         const foundLocalUser = accounts.find(
             (acc: any) =>
                 (acc.username?.toLowerCase() === input ||
@@ -36,7 +36,7 @@ function LoginPage() {
             return;
         }
 
-        // 2️⃣ FALLBACK: account mẫu (accountData.ts)
+        // FALLBACK: account mẫu (accountData.ts)
         if (
             input === accountData.user.email.toLowerCase() &&
             cleanPassword === accountData.user.pass
@@ -59,6 +59,7 @@ function LoginPage() {
     };
 
 
+    // @ts-ignore
     return (
         <div className="login-page">
             <div className="login-name">
