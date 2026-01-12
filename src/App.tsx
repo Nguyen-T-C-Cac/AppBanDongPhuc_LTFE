@@ -31,9 +31,7 @@ function App() {
           <Route path="/product/:id" element={<BackLayout><ProductDetail /></BackLayout>} />
          
           <Route path="/account" element={<BackLayout> <Account /> </BackLayout>}/>
-          
-            <Route element={<LoginLayout/>}>
-
+          <Route element={<LoginPage />} />
           <Route
               path="/home"
               element={
