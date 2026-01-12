@@ -15,13 +15,15 @@ export const accountData = {
                     id: 1,
                     name: "Nhà riêng",
                     text: "Khu phố 6, Linh Trung, Thủ Đức, TP.HCM",
-                    phone: "+84 7755 xxx xxx"
+                    phone: "+84 7755 xxx xxx",
+                    map:map
                 },
                 {
                     id: 2,
                     name: "Công ty",
                     text: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-                    phone: "+84 912 xxx xxx"
+                    phone: "+84 912 xxx xxx",
+                    map:map
                 }
             ],
             contact: {
@@ -40,7 +42,8 @@ export const accountData = {
                     id: 1,
                     name: "Nhà riêng",
                     text: "Quan 1, TP.HCM",
-                    phone: "+84 7755 xxx xxx"
+                    phone: "+84 7755 xxx xxx",
+                    map:map
                 },
             ],
             contact: {
@@ -59,7 +62,8 @@ export const accountData = {
                     id: 1,
                     name: "Nhà riêng",
                     text: "Quan 7, TP.HCM",
-                    phone: "+84 7755 xxx xxx"
+                    phone: "+84 7755 xxx xxx",
+
                 },
             ],
             contact: {
