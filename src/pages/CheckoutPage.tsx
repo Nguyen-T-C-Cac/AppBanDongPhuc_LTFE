@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CartItem, LogoCustomization } from "../types/CartType"; // Import type cũ của bạn
+import { CartItem, LogoCustomization } from "../types/CartType";
 import Navbar from "../components/common/Navbar";
 import '../styles/checkout.css';
-import PageHeader from "../components/common/PageHeader"; // Tận dụng CSS cũ hoặc tạo file checkout.css mới
+import PageHeader from "../components/common/PageHeader";
 import { accountData } from "../data/account";
+import { User, Address } from "../types/AccountType";
+import { getCurrentUser } from "../utils/accountUtil";
 import {shippingOptions} from "../data/shipping";
 import iconTransfer from "../assets/icon/checkout/transfer.svg"
 import iconCash from "../assets/icon/checkout/cash.svg"
@@ -17,6 +19,7 @@ const Checkout = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
     //const [paymentMethod, setPaymentMethod] = useState(accountData.payment || "bank");
     const [paymentMethod, setPaymentMethod] = useState<
         "bank" | "deposit" | "online" | "cod"
@@ -27,11 +30,39 @@ const Checkout = () => {
     // Lấy dữ liệu được gửi từ trang Cart
     const checkoutItems: CartItem[] = location.state?.items || [];
     const [showAddressModal, setShowAddressModal] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState(accountData.addresses[0]);
+    //const [selectedAddress, setSelectedAddress] = useState(accountData.addresses[0]);
+    const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
     const [showShippingModal, setShowShippingModal] = useState(false);
 
     const [shippingOption, setShippingOption] = useState<"standard" | "fast">("standard");
     const [showQRModal, setShowQRModal] = useState(false);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        const user = getCurrentUser();
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+        setCurrentUser(user);
+
+        if (user.activeAddress && user.activeAddress.text) {
+            setSelectedAddress(user.activeAddress);
+        }
+        else if (user.savedAddresses.length > 0) {
+            setSelectedAddress(user.savedAddresses[0]);
+        }else {
+            setSelectedAddress({
+                name: user.username || "User",
+                text: "",
+                phone: user.contact?.phone || ""
+            });
+            // navigate("/account");
+        }
+        if(user.payment) {
+            setPaymentMethod(user.payment);
+        }
+    }, [navigate]);
 
     // Tính lại tổng tiền
     const Subtotal = checkoutItems.reduce((total, item) => {
@@ -114,6 +145,11 @@ const Checkout = () => {
     };
     // Xử lý Place Order
     const handlePlaceOrder = () => {
+        if (!selectedAddress || !selectedAddress.text || selectedAddress.text.trim() === "") {
+            alert("Please select or add a shipping address before placing order.");
+            setShowAddressModal(true);
+            return;
+        }
         if (paymentMethod === "bank") {
             setShowQRModal(true);
         } else {
@@ -130,8 +166,7 @@ const Checkout = () => {
             </div>
         );
     }
-    const { user} = accountData;
-
+    if (!currentUser || !selectedAddress) return <div>Loading...</div>;
     return (
         <div className="checkout-page">
             <PageHeader title="Checkout"/>
@@ -143,7 +178,7 @@ const Checkout = () => {
                 </div>
                 <div className="shipping-body">
                     <p className="shipping-name">
-                        {user.name} <span>({selectedAddress.phone})</span>
+                        {selectedAddress.name} <span>({selectedAddress.phone})</span>
                     </p>
                     <p className="shipping-address">{selectedAddress.text}</p>
                 </div>
@@ -352,10 +387,23 @@ const Checkout = () => {
                             <b>Select Address</b>
                             <span onClick={() => setShowAddressModal(false)}>✕</span>
                         </div>
-
-                        {accountData.addresses.map(addr => (
+                        {/* 1. Hiển thị địa chỉ Active (Đã sửa bên Account) */}
+                        {currentUser.activeAddress && (
                             <div
-                                key={addr.id}
+                                className={`address-item ${selectedAddress.text === currentUser.activeAddress.text ? "active" : ""}`}
+                                onClick={() => {
+                                    setSelectedAddress(currentUser.activeAddress);
+                                    setShowAddressModal(false);
+                                }}
+                            >
+                                <b>{currentUser.activeAddress.name} (Current)</b>
+                                <p>{currentUser.activeAddress.text}</p>
+                                <span>{currentUser.activeAddress.phone}</span>
+                            </div>
+                        )}
+                        {currentUser.savedAddresses.map((addr, index) => (
+                            <div
+                                key={index}
                                 className={`address-item ${selectedAddress.id === addr.id ? "active" : ""}`}
                                 onClick={() => {
                                     setSelectedAddress(addr);
@@ -368,8 +416,8 @@ const Checkout = () => {
                             </div>
                         ))}
 
-                        <button className="add-address-btn">
-                            + Add new address
+                        <button className="add-address-btn" onClick={() => navigate("/account")}>
+                            + Manage addresses in Account
                         </button>
                     </div>
                 </div>

@@ -319,7 +319,7 @@
 
 .logo-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     gap: 16px;
     margin-top: 10px;
@@ -340,7 +340,7 @@
 .save-btn {
     background: #ff884d;
     border: none;
-    padding: 8px 24px;
+    padding: 8px 0px;
     font-size: 14px;
     color: #fff;
     border-radius: 6px;
