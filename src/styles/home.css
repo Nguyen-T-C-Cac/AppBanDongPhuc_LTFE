@@ -41,7 +41,7 @@
 }
 
 .about-content h2 {
-    font-size: 26px;
+    font-size: 22px;
     color: #ff7a00;
     margin-right: 180px;
     margin-top: 20px;
@@ -50,7 +50,7 @@
 
 .about-content .intro {
     text-align: left;
-    font-size: 16px;
+    font-size: 12px;
     color: #111;
     margin-left: 35px;
     margin-right: 70px;
@@ -59,7 +59,7 @@
 
 .about-content p {
     text-align: left;
-    font-size: 13px;
+    font-size: 12px;
     color: #222;
     line-height: 1.6;
     margin-left: 100px;
@@ -104,26 +104,22 @@
     display: flex;
     justify-content: center;
 }
-
 .reason-container {
     display: flex;
     align-items: center;
     max-width: 360px;
     gap: 8px;
 }
-
 .reason-images {
     flex: 1.5;
     position: relative;
 }
-
 .reason-images .image-large {
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
     right: 4px;
 }
-
 .reason-images .image-large img {
     width: 110px;
     height: 95px;
@@ -132,7 +128,6 @@
     border-radius: 12px;
     border: 2px solid #e17000;
 }
-
 .reason-images .image-small {
     position: absolute;
     bottom: -18px;
@@ -140,91 +135,131 @@
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
-
 .reason-images .image-small img {
     width: 95px;
     height: 75px;
     display: block;
     border-radius: 8px;
 }
-
 .reason-text {
     flex: 2;
 }
-
 .reason-text h3 {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     color: #ff7a00;
     margin-bottom: 12px;
 }
-
 .reason-text p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.5;
     color: #111;
 }
 
 /* ================= PRINCIPLES ================= */
 .principles-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 60px 20px;
     text-align: center;
+    margin: 10px auto;
+    max-width: 100%;
+    padding: 0 10px;
+}
+
+.principles-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.principles-desc {
+    font-size: 12px;
+    color: #111;
+    max-width: 400px;
+    margin: 2px 20px 18px;
+    line-height: 1.4;
 }
 
 .principles-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
 }
 
 .principle-item {
-    background: #fff;
-    border: 1px solid #ff7a00;
-    border-radius: 12px;
-    padding: 20px;
+    border: 1.2px solid #ff8c42;
+    border-radius: 8px;
+    padding: 10px 6px;
+    background-color: #fff;
 }
+
+.principle-icon {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    margin-bottom: 6px;
+}
+
+.principle-item h4 {
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.principle-item p {
+    font-size: 9px;
+    line-height: 1.3;
+    color: #666;
+}
+
 
 /* ================= PRODUCTS ================= */
 .products-section {
-    padding: 60px 20px;
-    background: #f1f6ff;
+    margin: 36px auto 5px;
+    padding: 10px 10px;
+    background: #e6f5ff;
 }
 
 .products-section h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
     text-align: center;
-    margin-bottom: 30px;
+    letter-spacing: 0.5px;
 }
 
 .products-grid {
-    max-width: 1200px;
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
 }
 
 .product-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    transition: 0.25s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card img {
     width: 100%;
-    height: 180px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+}
+
+.product-card p {
+    margin-top: 6px;
+    font-size: 10px;
+    color: #333;
+    line-height: 1.3;
+    text-align: left;
+
+    /* giống app: không cho text quá dài */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* ================= PRODUCTS ================= */
+.list-products-section{
+    margin-bottom: 60px;
+}
+.section-title{
+    color: #555;
 }
 
 /* ================= RESPONSIVE ================= */
@@ -248,4 +283,8 @@
         width: 40%;
         transform: translate(15%, 15%);
     }
+    .principles-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
+
