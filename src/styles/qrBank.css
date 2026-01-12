@@ -1,0 +1,138 @@
+
+.qr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.qr-modal {
+    background: #fff;
+    width: 90%;
+    max-width: 350px;
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: zoomIn 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.qr-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.qr-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 12px;
+    background: #fafafa;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+}
+
+.qr-code-img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    display: block;
+}
+
+.qr-bank-logo {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    border-top: 1px dashed #ccc;
+    padding-top: 6px;
+    width: 100%;
+}
+
+.qr-scan-text {
+    color: #14056E;
+    font-weight: 600;
+    font-size: 14px;
+    margin: 5px 0;
+    text-transform: uppercase;
+}
+
+.qr-info-row {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.qr-amount {
+    color: #e74c3c;
+    font-size: 16px;
+    margin-left: 6px;
+}
+
+.qr-status {
+    font-size: 12px;
+    margin: 8px 0;
+    color: #333;
+}
+
+.status-waiting {
+    color: #f39c12;
+    font-weight: 600;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.qr-timer {
+    font-size: 12px;
+    font-style: italic;
+    color: #7f8c8d;
+    margin-bottom: 20px;
+}
+.qr-timer span{
+    color: #E52828;
+}
+.qr-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.qr-btn-download, .qr-btn-cancel {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    flex: 1;
+    border: none;
+}
+
+.qr-btn-download {
+    background: #FC8E54;
+    color: white;
+}
+
+.qr-btn-download:active {
+    background: #219150;
+}
+
+.qr-btn-cancel {
+    background: #ecf0f1;
+    color: #7f8c8d;
+}
+
+.qr-btn-cancel:active {
+    background: #bdc3c7;
+}

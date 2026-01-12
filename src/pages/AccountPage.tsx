@@ -28,6 +28,8 @@ export const normalizeUser = (raw: any): User => ({
 });
 function Account() {
     const navigate = useNavigate();
+    const mainAddress = accountData.addresses?.[0];
+    const user= accountData.user;
 
     const [user, setUser] = useState<any>(null);
     const [paymentMethod, setPaymentMethod] = useState("bank");
@@ -194,6 +196,7 @@ function Account() {
         </span>
             </section>
 
+<<<<<<< HEAD
             {/* ACCOUNT INFO */}
             {activeTab === "info" && (
                 <section className="account-section">
@@ -209,6 +212,46 @@ function Account() {
                         )}
 
                     </div>
+=======
+            {/* 3. SHIPPING ADDRESS */}
+            <section className="account-section">
+                <div className="section-header">
+                    <h4>Shipping Address</h4>
+                    <button>Edit</button>
+                </div>
+                    {mainAddress ? (
+                        <>
+                            <p className="address-name"><b>{mainAddress.name}</b></p>
+                            <p className="address-text">{mainAddress.text}</p>
+                            <p className="address-phone">{mainAddress.phone}</p>
+                        </>
+                    ) : (
+                        <p className="address-text">No address yet</p>
+                    )}
+                <img
+                    className="map-placeholder"
+                    alt="map"
+                />
+            </section>
+
+            {/* 4. CONTACT INFO */}
+            <section className="account-section">
+                <div className="section-header">
+                    <h4>Contact Information</h4>
+                    <button>Edit</button>
+                </div>
+                {mainAddress ? (
+                        <>
+                            <p className="address-email"><b>{user.email}</b></p>
+                            <p className="address-phone">{mainAddress.phone}</p>
+                        </>
+                ) : (
+                    <p className="address-text">No Information</p>
+                )}
+                {/* <input value={accountData.contact.email} readOnly />
+                <input value={accountData.contact.phone} readOnly />*/}
+            </section>
+>>>>>>> caca
 
                     {!isEditingAddress ? (
                         <p className="address-text">

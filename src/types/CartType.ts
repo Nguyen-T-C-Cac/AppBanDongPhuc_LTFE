@@ -1,5 +1,13 @@
 import React from 'react';
 // src/components/redux/cartTypes.ts
+export interface LogoCustomization {
+    logoType: string; // "Printing", "Embroidery", "No Logo"
+    positions: string[];
+    width: string;
+    height: string;
+    image?: string;
+    notes: string;
+}
 
 export interface SizeItem {
     size: string;        // S, M, L
@@ -15,5 +23,5 @@ export interface CartItem {
     sizes: SizeItem[];
 
     gender?: string;     // Women / Men / Women-Men
-    logoType?: string;   // No logo / Print / Embroidery
+    logoType?: string | LogoCustomization;   // No logo / Print / Embroidery
 }

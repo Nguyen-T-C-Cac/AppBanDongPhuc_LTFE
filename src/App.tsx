@@ -17,6 +17,8 @@ import CategoryProducts from "./pages/Products/CategoryProducts";
 import ProductDetail from './pages/ProductDetailPage';
 import BackLayout from "./layouts/BackLayout";
 import LoginLayout from "./layouts/LoginLayout";
+import Checkout from "./pages/CheckoutPage";
+
 
 function App() {
   return (
@@ -75,6 +77,11 @@ function App() {
             <Route
                 path="/cart"
                 element={<Cart />
+                }
+            />
+            <Route
+                path="/checkout"
+                element={<Checkout />
                 }
             />
             <Route>

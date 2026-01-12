@@ -1,6 +1,6 @@
 .cart{
     padding-top: 70px;
-    padding-bottom: 200px;
+    padding-bottom: 170px;
     min-height: 100vh;
 }
 /* Container chính */
@@ -72,6 +72,13 @@
     gap: 6px;
     flex-wrap: wrap;
     margin-top: 4px;
+}
+.mini-logo-thumb {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-left: 4px;
+    border-radius: 4px;
 }
 
 .tag {
@@ -276,7 +283,24 @@
 .upload-btn:hover {
     background: #d1d5db;
 }
+.upload-row {
+    display: flex;
+    align-items: center;
+    gap: 70px;
+}
+.logo-preview {
+    margin-top: 0;
+}
 
+.logo-preview img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 4px;
+    background: #fafafa;
+}
 .logo-notes {
     width: 100%;
     min-height: 50px;
