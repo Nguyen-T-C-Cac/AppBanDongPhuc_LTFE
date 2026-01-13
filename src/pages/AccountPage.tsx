@@ -352,32 +352,61 @@ function Account() {
             {/* PAYMENT METHODS */}
             <section className="account-section">
                 <h4>Payment Methods</h4>
-                <label>
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "bank"}
                         onChange={() => setPaymentMethod("bank")}
                     />
-                    <span className="payment-text">Bank Transfer (BIDV)</span>
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-university payment-icon"></i>
+                    <span className="payment-text">Bank Transfer</span>
                 </label>
-                <label>
+                {/* BIDV DETAIL – CHỈ HIỆN KHI CHỌN BANK */}
+                {paymentMethod === "bank" && (
+                    <div className="bank-detail">
+                        <div className="bank-left">
+                            <span className="bank-name">BIDV</span>
+                            <span className="bank-number">937800****</span>
+                        </div>
+                        <button className="bank-add-btn">
+                            add &raquo;
+                        </button>
+                    </div>
+                )}
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "online"}
                         onChange={() => setPaymentMethod("online")}
                     />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-credit-card payment-icon"></i>
                     <span className="payment-text">Online Payment</span>
                 </label>
-                <label>
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "cod"}
                         onChange={() => setPaymentMethod("cod")}
                     />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-truck payment-icon"></i>
                     <span className="payment-text">Cash on Delivery</span>
+                </label>
+                <label className="payment-option">
+                    <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === "deposit"}
+                        onChange={() => setPaymentMethod("deposit")}
+                    />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-file-text-o payment-icon"></i>
+                    <span className="payment-text">Deposit Payment</span>
                 </label>
             </section>
 

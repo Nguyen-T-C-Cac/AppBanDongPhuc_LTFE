@@ -1,95 +1,148 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import uniforms from "../data/uniforms";
 import "../styles/productDetail.css";
 import {reviews} from "../data/reviews";
+import LogoCustomizationModal  from "../components/cart/LogoCustomizationModal";
+import { LogoCustomization } from "../types/CartType";
+import ProductGrid from "./Products/ProductGrid";
+import {Product} from "../types/ProductType";
+import { accountData } from "../data/account";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const ProductDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    // Tìm product
-    const product = uniforms.find((p) => p.id === Number(id));
 
-// Khởi tạo state **sau khi chắc chắn product tồn tại**
-    const [mainImage, setMainImage] = useState<string>(product?.images[0]?? "");
-    const [selectedSize, setSelectedSize] = useState<string>(product?.sizes[0].size?? "");
-    const [quantity, setQuantity] = useState<number>(product?.minimumOrderQuantity??1);
-    const [selectedGender, setSelectedGender] = useState<string>(
-        product?.genders?.[0] ?? ""
+    /* ================== PRODUCT ================== */
+    const product = useMemo(
+        () => uniforms.find(p => p.id === Number(id)),
+        [id]
     );
-    /*LOGO*/
-    const [logoOption, setLogoOption] = useState<"no-logo" | "logo">("no-logo");
-    const [showLogoMenu, setShowLogoMenu] = useState(false);
-    const [logoMode, setLogoMode] = useState<"none" | "logo">("none");
-    const [showLogoPanel, setShowLogoPanel] = useState(false);
+
+    /* ================== STATES ================== */
+    const [mainImage, setMainImage] = useState("");
+    const [selectedSize, setSelectedSize] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const [selectedGender, setSelectedGender] = useState("");
+    const [showLogoModal, setShowLogoModal] = useState(false);
+    const [logoCustomization, setLogoCustomization] =
+        useState<LogoCustomization>({
+            logoType: "No Logo",
+            positions: [],
+            width: "",
+            height: "",
+            notes: "",
+        });
+
+    const [openTab, setOpenTab] =
+        useState<"description" | "comment" | null>("description");
+
+    const [selectedRating, setSelectedRating] =
+        useState<number | null>(null);
+    const ratingFilters = [
+        { label: "Tất cả", value: null },
+        { label: "1 sao", value: 1 },
+        { label: "2 sao", value: 2 },
+        { label: "3 sao", value: 3 },
+        { label: "4 sao", value: 4 },
+        { label: "5 sao", value: 5 },
+    ];
+    const [selectedType, setSelectedType] = useState<string | null>(null);
 
 
-    // Cập nhật state khi product thay đổi
+    /* ================== USERS MAP ================== */
+    const userMap = useMemo(() => {
+        return Object.fromEntries(
+            accountData.users.map(u => [u.id, u])
+        );
+    }, []);
+
+    /* ================== REVIEWS ================== */
+    const productReviews = useMemo(() => {
+        if (!product) return [];
+        return reviews.filter(r => r.productId === product.id);
+    }, [product]);
+
+    const filteredReviews = useMemo(() => {
+        if (selectedRating === null) return productReviews;
+        return productReviews.filter(r => r.rating === selectedRating);
+    }, [productReviews, selectedRating]);
+    const normalizeTypes = (types: string | string[]) =>
+        Array.isArray(types) ? types : [types];
+
+    const featuredProducts = useMemo(() => {
+        if (!product) return [];
+        const productTypes = normalizeTypes(product.types);
+        return uniforms
+            .filter(u => {
+                if (u.id === product.id) return false;
+                const uTypes = normalizeTypes(u.types);
+                return uTypes.some(type =>
+                    productTypes.includes(type)
+                );
+            })
+            .slice(0, 8);
+    }, [product]);
+    /* ================== RATING ================== */
+    const totalComments = productReviews.length;
+    const averageRating = useMemo(() => {
+        if (totalComments === 0) return 0;
+        return (
+            productReviews.reduce((sum, r) => sum + r.rating, 0) /
+            totalComments
+        );
+    }, [productReviews, totalComments]);
+    const handleToggleComment = () => {
+        setOpenTab(prev => (prev === "comment" ? null : "comment"));
+    };
+    /* ================== EFFECTS ================== */
+    useEffect(() => {
+        if (!product) return;
+        setMainImage(product.images[0]);
+        setSelectedSize(product.sizes[0].size);
+        setQuantity(product.minimumOrderQuantity);
+        if (product.genders?.length) {
+            setSelectedGender(product.genders[0]);
+        }
+    }, [product]);
     useEffect(() => {
         if (!product) return;
         const stock =
             product.sizes.find(s => s.size === selectedSize)?.stock ?? 0;
-
-        const min = product.minimumOrderQuantity;
-
         if (stock === 0) {
             setQuantity(0);
             return;
         }
-
-        // reset quantity hợp lệ cho size mới
-        setQuantity(Math.min(Math.max(min, 1), stock));
-    }, [selectedSize]);
-    useEffect(() => {
-        if (!product) return;
-        if (product.genders && product.genders.length > 0) {
-            setSelectedGender(product.genders[0]);
-        }
-    }, [product]);
-
+        setQuantity(q =>
+            Math.min(Math.max(product.minimumOrderQuantity, q), stock)
+        );
+    }, [selectedSize, product]);
+    /* ================== EARLY RETURN ================== */
     if (!product) return <p>Product not found</p>;
+    /* ================== HANDLERS ================== */
     const currentStock =
-        product.sizes.find((s) => s.size === selectedSize)?.stock || 0;
-
+        product.sizes.find(s => s.size === selectedSize)?.stock || 0;
     const increase = () => {
-        if (quantity < currentStock) setQuantity(quantity + 1);
+        if (quantity < currentStock) setQuantity(q => q + 1);
     };
-
     const decrease = () => {
-        if (quantity > product.minimumOrderQuantity) setQuantity(quantity - 1);
+        if (quantity > product.minimumOrderQuantity) {
+            setQuantity(q => q - 1);
+        }
     };
-
-    const currentImageIndex = product.images.findIndex(
-        (img) => img === mainImage
-    );
-
+    const currentImageIndex =
+        product.images.findIndex(img => img === mainImage);
     const handlePrevImage = () => {
         if (currentImageIndex > 0) {
             setMainImage(product.images[currentImageIndex - 1]);
         }
     };
-
     const handleNextImage = () => {
         if (currentImageIndex < product.images.length - 1) {
             setMainImage(product.images[currentImageIndex + 1]);
         }
     };
-    // review của sản phẩm hiện tại
-    const productReviews = reviews.filter(
-        (r) => r.productId === product.id
-    );
-    // tổng số comment
-    const totalComments = productReviews.length;
-    // trung bình sao
-    const averageRating =
-        totalComments > 0
-            ? productReviews.reduce((sum, r) => sum + r.rating, 0) / totalComments
-            : 0;
-    // số sao vàng (làm tròn xuống)
-    const fullStars = Math.floor(averageRating);
-    // sao trắng
-    const emptyStars = 5 - fullStars;
-
     return (
         <div className="product-detail">
             {/* Images */}
@@ -99,20 +152,13 @@ const ProductDetail: React.FC = () => {
                 </button>
                 <img src={mainImage} alt={product.name} className="main-image"/>
                 <button className="nav-btn right" onClick={handleNextImage}
-                   disabled={currentImageIndex === product.images.length - 1}>&gt;&gt;</button>
+                        disabled={currentImageIndex === product.images.length - 1}>&gt;&gt;</button>
                 <div className="thumbnails">
                     {product.images.map((img, idx) => (
-                        <img
-                            key={idx}
-                            src={img}
-                            alt={`${product.name}-${idx}`}
-                            className={`thumb ${mainImage === img ? "active" : ""}`}
-                            onClick={() => setMainImage(img)}
-                        />
-                    ))}
+                        <img key={idx} src={img} alt={`${product.name}-${idx}`} className={`thumb ${mainImage === img ? "active" : ""}`}
+                            onClick={() => setMainImage(img)}/>))}
                 </div>
             </div>
-
             {/* Info */}
             <div className="info">
                 <h1>{product.name}</h1>
@@ -122,13 +168,20 @@ const ProductDetail: React.FC = () => {
                             {averageRating.toFixed(1)}
                         </span>
                         <div className="stars">
-                            {Array.from({ length: fullStars }).map((_, i) => (
-                                <span key={`full-${i}`} className="star full">★</span>
-                            ))}
-
-                            {Array.from({ length: emptyStars }).map((_, i) => (
-                                <span key={`empty-${i}`} className="star empty">☆</span>
-                            ))}
+                            {Array.from({ length: 5 }).map((_, i) =>
+                                i < Math.floor(averageRating) ? (
+                                    <FaStar key={i} className="star full" />
+                                ) : (
+                                    <FaRegStar key={i} className="star empty" />
+                                )
+                            )}
+                            {Array.from({ length: 5 }).map((_, i) =>
+                                i < Math.floor(averageRating) ? (
+                                    <FaStar key={i} className="star full" />
+                                ) : (
+                                    <FaRegStar key={i} className="star empty" />
+                                )
+                            )}
                         </div>
                     </div>
                     <span className="comment-count">
@@ -164,70 +217,24 @@ const ProductDetail: React.FC = () => {
                             product.sizes.find(s => s.size === selectedSize)?.stock ?? 0}
                     </span>
                     </div>
-                   <div className="logo-row">
-                       <p className="logo-text">Logo type: </p>
-                       <div className="logo-btn-wrapper">
-                           <button className="logo-dropdown-btn"
-                               onClick={() => setShowLogoMenu(prev => !prev)}>
-                               {logoOption === "no-logo" ? "No logo" : "Logo"}
-                               <span className={`arrow ${showLogoMenu ? "open" : ""}`}>˅</span>
-                           </button>
-
-                           {showLogoMenu && (
-                              <div className="logo-dropdown">
-                                <button className={logoMode === "none" ? "active" : ""} onClick={() => {
-                                    setLogoMode("none");
-                                    setShowLogoMenu(false);
-                                    setShowLogoPanel(false);
-                                    }}>No Logo
-                                </button>
-                                <button className={logoMode === "logo" ? "active" : ""} onClick={() => {
-                                    setLogoMode("logo");
-                                    setShowLogoMenu(false);
-                                    setShowLogoPanel(true);
-                                    }}>Logo
-                                </button>
-                              </div>
-                           )}
-                           {showLogoPanel && (
-                                <div className="logo-panel-mobile">
-                                    <div className="panel-header">
-                                        <span>LOGO CUSTOMIZATION</span>
-                                        <button onClick={() => setShowLogoPanel(false)}>✕</button>
-                                    </div>
-                                    <div className="panel-content">
-                                        <label>Logo type</label>
-                                        <select>
-                                            <option>No Logo</option>
-                                            <option>Printing</option>
-                                            <option>Embroidery</option>
-                                        </select>
-                                        <label>Position</label>
-                                        <select>
-                                            <option>Left Chest</option>
-                                            <option>Right Chest</option>
-                                            <option>Back</option>
-                                            <option>Sleeve</option>
-                                        </select>
-                                        <label>Size (cm)</label>
-                                        <div className="inline">
-                                            <input placeholder="Width" />
-                                            <input placeholder="Height" />
-                                        </div>
-                                        <label>Upload Logo</label>
-                                        <input type="file" />
-                                        <label>Notes</label>
-                                        <textarea rows={3} />
-                                        <div className="panel-actions">
-                                            <button className="cancel">Cancel</button>
-                                            <button className="save">Save</button>
-                                        </div>
-                                    </div>
-                                </div>
-                           )}
-
-                       </div>
-                   </div>
+                    <div className="logo-row">
+                        <p className="logo-text">Logo type:</p>
+                        <button className="logo-dropdown-btn"
+                            onClick={() => setShowLogoModal(true)}>
+                            {logoCustomization.logoType}
+                            <span className="arrow">˅</span>
+                        </button>
+                        {logoCustomization.image && (
+                            <img src={logoCustomization.image} alt="logo preview" className="mini-logo-thumb"/>
+                        )}
+                    </div>
+                    <LogoCustomizationModal isOpen={showLogoModal} onClose={() => setShowLogoModal(false)}
+                        initialData={logoCustomization}
+                        onSave={(data) => {
+                            setLogoCustomization(data);
+                            setShowLogoModal(false);
+                        }}
+                    />
                 </div>
                 {/* Gender */}
                 {product.genders && product.genders.length > 0 && (
@@ -235,15 +242,9 @@ const ProductDetail: React.FC = () => {
                         <label className="info-gender">Gender:</label>
                         <div className="gender-options">
                             {product.genders.map((g) => (
-                                <button
-                                    key={g}
-                                    type="button"
-                                    className={`gender-btn ${
-                                        selectedGender === g ? "active" : ""
-                                    }`}
-                                    onClick={() => setSelectedGender(g)}
-                                >
-                                    {g}
+                                <button key={g} type="button"
+                                    className={`gender-btn ${selectedGender === g ? "active" : ""}`}
+                                    onClick={() => setSelectedGender(g)}>{g}
                                 </button>
                             ))}
                         </div>
@@ -254,11 +255,8 @@ const ProductDetail: React.FC = () => {
                     <label>Quantity</label>
                     <div className="quantity-control">
                         <button className="qty-btn" onClick={decrease} disabled={quantity <= product.minimumOrderQuantity}>−</button>
-                        <input
-                            type="number"
-                            value={quantity === 0 ? "" : quantity}
-                            min={product.minimumOrderQuantity}
-                            max={currentStock}
+                        <input type="number" value={quantity === 0 ? "" : quantity}
+                            min={product.minimumOrderQuantity} max={currentStock}
                             onChange={(e) => {
                                 const val = e.target.value;
                                 if (val === "") setQuantity(0);
@@ -274,15 +272,116 @@ const ProductDetail: React.FC = () => {
                     <small>Minimum order: {product.minimumOrderQuantity}</small>
                     {currentStock === 0 && <span className="out-of-stock">Out of stock</span>}
                 </div>
-
                 {/* Buttons */}
                 <div className="buttons">
                     <button disabled={currentStock === 0}>Add to Cart</button>
                     <button disabled={currentStock === 0}>Buy Now</button>
                 </div>
             </div>
-            <p>{product.description}</p>
-
+            {/* DESCRIPTION & COMMENT */}
+            <div className="product-tabs">
+                {/* DESCRIPTION */}
+                <div className="tab-item">
+                    <div className="tab-header" onClick={() =>
+                            setOpenTab(openTab === "description" ? null : "description")}>
+                        <span>Description</span>
+                        <span className={`arrow ${openTab === "description" ? "open" : ""}`}>⌄</span>
+                    </div>
+                    {openTab === "description" && (
+                        <div className="tab-content">
+                            <p>{product.description}</p>
+                        </div>
+                    )}
+                </div>
+                {/* COMMENT */}
+                <div className="tab-item">
+                    <div className="tab-header" onClick={handleToggleComment}>
+                        <span>Comment</span>
+                        <span className={`arrow ${openTab === "comment" ? "open" : ""}`}>⌄</span>
+                    </div>
+                    {openTab === "comment" && (
+                        <div className="tab-content">
+                            <div className="review-section">
+                                {/* LEFT SUMMARY */}
+                                <div className="review-summary">
+                                    <div className="rating-score">
+                                        {averageRating.toFixed(1)}
+                                    </div>
+                                    <div className="rating-stars">
+                                        {Array.from({ length: 5 }).map((_, i) =>
+                                            i < Math.floor(averageRating) ? (
+                                                <FaStar key={i} className="star full" />
+                                            ) : (
+                                                <FaRegStar key={i} className="star empty" />
+                                            )
+                                        )}
+                                    </div>
+                                    <div className="rating-count">
+                                        {productReviews.length} đánh giá
+                                    </div>
+                                </div>
+                                {/* RIGHT CONTENT */}
+                                <div className="review-content">
+                                    <div className="rating-filter">
+                                        {ratingFilters.map((f) => (
+                                            <button key={f.label} className={selectedRating === f.value ? "active" : ""}
+                                                onClick={() => setSelectedRating(f.value)}>{f.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {/* COMMENTS */}
+                                    <div className="review-list">
+                                        {filteredReviews.length === 0 ? (
+                                            <p>No comments yet</p>
+                                        ) : (
+                                            filteredReviews.map((r) => {
+                                                const user = userMap[r.userId];
+                                                return (
+                                                    <div key={r.id} className="comment-item">
+                                                        <div className="comment-header">
+                                                            {user?.avatar && (
+                                                                <img src={user.avatar} alt={user.name} className="comment-avatar"/>
+                                                            )}
+                                                            <div>
+                                                                <strong>
+                                                                    {user?.name ?? "Anonymous"}
+                                                                </strong>
+                                                                <div className="comment-meta">
+                                                                    <span>{r.date}</span>
+                                                                    <span> • </span>
+                                                                    <span>{r.time}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="comment-rating">
+                                                            {Array.from({ length: r.rating }).map((_, i) => (
+                                                                <FaStar key={`full-${i}`} className="star full"/>
+                                                            ))}
+                                                            {Array.from({ length: 5 - r.rating }).map((_, i) => (
+                                                                <FaRegStar key={`empty-${i}`} className="star empty"/>
+                                                            ))}
+                                                        </div>
+                                                        <p className="comment-text">{r.comment}</p>
+                                                    </div>
+                                                );
+                                            })
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+            {/*LIST PRODUCT*/}
+            <div className="list-products-section">
+                <div className="products-page">
+                    <h2 className="section-title">
+                        {selectedType ? selectedType.toUpperCase() : "RECOMMENDED PRODUCTS"}
+                    </h2>
+                    <ProductGrid products={featuredProducts as Product[]} />
+                </div>
+            </div>
         </div>
     );
 };

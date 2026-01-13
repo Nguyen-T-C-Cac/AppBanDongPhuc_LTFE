@@ -470,6 +470,161 @@ select {
 span {
     font-weight: 600;
 }
+/*description and comment*/
+/* ===== TABS ===== */
+.product-tabs {
+    margin-top: 24px;
+    border-top: 1px solid #eaeaea;
+}
+
+.tab-item {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.tab-content {
+    padding: 12px 0 20px;
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+}
+
+.arrow {
+    font-size: 14px;
+    color: #666;
+}
+
+.arrow.open {
+    transform: rotate(180deg);
+}
+
+/* ===== REVIEW SECTION ===== */
+.review-section {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+}
+
+/* LEFT SUMMARY */
+.review-summary {
+    border-right: 1px solid #eaeaea;
+    padding-right: 8px;
+    text-align: center;
+}
+
+.rating-score {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+}
+
+.rating-stars {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #f5a623;
+}
+.rating-stars .star {
+    font-size: 10px;
+    margin-right: 2px;
+}
+
+.star.full {
+    color: #f5a623;
+}
+
+.star.empty {
+    color: #ccc;
+}
+.rating-count {
+    font-size: 13px;
+    color: #888;
+}
+
+/* RIGHT CONTENT */
+.review-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+/* FILTER */
+.rating-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.rating-filter button {
+    padding: 3px 3px;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.rating-filter button.active {
+    border-color: #f5a623;
+    color: #f5a623;
+}
+
+/* ===== COMMENT LIST ===== */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.comment-item {
+    padding-bottom: 4px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.comment-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-meta {
+    font-size: 12px;
+    color: #999;
+}
+
+.comment-rating {
+    margin: 2px 0;
+}
+
+.star.full {
+    color: #f5a623;
+}
+
+.star.empty {
+    color: #ccc;
+}
+
+.comment-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+}
 
 /* Responsive */
 @media (max-width: 900px) {
