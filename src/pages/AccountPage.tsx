@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/account.css";
 import { accountData } from "../data/account";
+import { BankAccount  } from "../types/bank";
 import defaultMap from "../assets/images/ImageHome/avarta/map2.png";
 import {orderHistory} from "../data/orderHistory";
 import {getCurrentUser, saveCurrentUser} from "../utils/accountUtil";
@@ -48,7 +49,8 @@ function Account() {
 
     const [user, setUser] = useState<User| null>(null);
 
-    const [paymentMethod, setPaymentMethod] = useState("bank");
+    const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
+
     const [activeTab, setActiveTab] = useState("info");
 
     const [isEditingContact, setIsEditingContact] = useState(false);
@@ -62,7 +64,61 @@ function Account() {
     });
 
     const deliveredOrders = orderHistory.filter((orderHistory: { status: string; }) => orderHistory.status === "Delivered");
+    const [showBankForm, setShowBankForm] = useState(false);
 
+    const [bankForm, setBankForm] = useState({
+        bankName: "",
+        branchName: "",
+        accountNumber: "",
+        accountHolder: "",
+        isDefault: false,
+    });
+    const BANK_COLORS: Record<string, string> = {
+        BIDV: "#20929e",        // xanh BIDV
+        Vietcombank: "#16a34a", // xanh lá
+        ACB: "#2563eb",         // xanh dương
+        Techcombank: "#dc2626", // đỏ
+        Agribank: "#9e3333",
+        Vietinbank: "#3f77a5",
+        MB: "#012dda",
+        HDbank: "#605c52",
+        VIB: "#193b60",
+        VPbank: "#5e9855"
+    };
+    const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
+
+    const handleSaveBank = () => {
+        if (!bankForm.bankName || !bankForm.accountNumber) return;
+
+        setBankAccounts((prev) => {
+            const shouldBeDefault =
+                bankForm.isDefault || prev.length === 0;
+
+            const updated = shouldBeDefault
+                ? prev.map((b) => ({ ...b, isDefault: false }))
+                : prev;
+
+            return [
+                ...updated,
+                {
+                    id: Date.now(),
+                    bankName: bankForm.bankName,
+                    branchName: bankForm.branchName,
+                    accountNumber: bankForm.accountNumber,
+                    accountHolder: bankForm.accountHolder,
+                    isDefault: shouldBeDefault,
+                },
+            ];
+        });
+        setShowBankForm(false);
+        setBankForm({
+            bankName: "",
+            branchName: "",
+            accountNumber: "",
+            accountHolder: "",
+            isDefault: false,
+        });
+    };
     /* ================= INIT USER ================= */
     useEffect(() => {
         const currentUser = JSON.parse(
@@ -94,7 +150,6 @@ function Account() {
             phone: user.contact.phone,
             email: user.email,
         });
-        setPaymentMethod(user.payment);
     }, []);
     /* ================= AVATAR ================= */
     const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -352,16 +407,22 @@ function Account() {
             {/* PAYMENT METHODS */}
             <section className="account-section">
                 <h4>Payment Methods</h4>
+                {paymentMethod === null && (
+                    <p className="payment-empty">
+                    </p>
+                )}
                 <label className="payment-option">
-                    <input
-                        type="radio"
-                        name="payment"
+                    <input type="radio" name="payment"
                         checked={paymentMethod === "bank"}
-                        onChange={() => setPaymentMethod("bank")}
-                    />
+                        onChange={() => setPaymentMethod("bank")}/>
                     <span className="custom-radio"></span>
                     <i className="fa fa-university payment-icon"></i>
                     <span className="payment-text">Bank Transfer</span>
+                    {paymentMethod === "bank" && (
+                        <button className="bank-add-btn"
+                                onClick={() => setShowBankForm(true)}>add »
+                        </button>
+                    )}
                 </label>
                 {/* BIDV DETAIL – CHỈ HIỆN KHI CHỌN BANK */}
                 {paymentMethod === "bank" && (
@@ -370,11 +431,114 @@ function Account() {
                             <span className="bank-name">BIDV</span>
                             <span className="bank-number">937800****</span>
                         </div>
-                        <button className="bank-add-btn">
-                            add &raquo;
-                        </button>
                     </div>
                 )}
+                {showBankForm && (
+                    <div className="bank-form">
+                        <h4>Add Bank Account</h4>
+
+                        <div className="form-row">
+                            <label>Bank Name</label>
+                            <select
+                                value={bankForm.bankName}
+                                onChange={(e) =>
+                                    setBankForm({ ...bankForm, bankName: e.target.value })
+                                }
+                            >
+                                <option value="">Select bank</option>
+                                <option value="BIDV">BIDV</option>
+                                <option value="Vietcombank">Vietcombank</option>
+                                <option value="Techcombank">Techcombank</option>
+                                <option value="Agribank">Agribank</option>
+                                <option value="Vietinbank">Vietinbank</option>
+                                <option value="MB">MB</option>
+                                <option value="HDbank">HDbank</option>
+                                <option value="VIB">VIB</option>
+                                <option value="VPbank">VPbank</option>
+                            </select>
+                        </div>
+
+                        <div className="form-row">
+                            <label>Branch Name</label>
+                            <input
+                                type="text"
+                                placeholder="Enter branch name"
+                                value={bankForm.branchName}
+                                onChange={(e) =>
+                                    setBankForm({ ...bankForm, branchName: e.target.value })
+                                }
+                            />
+                        </div>
+
+                        <div className="form-row">
+                            <label>Account Number</label>
+                            <input
+                                type="text"
+                                placeholder="Enter account number"
+                                value={bankForm.accountNumber}
+                                onChange={(e) =>
+                                    setBankForm({ ...bankForm, accountNumber: e.target.value })
+                                }
+                            />
+                        </div>
+                        <div className="form-row toggle-row">
+                            <span>Set as Default Account</span>
+                            <label className="switch">
+                                <input
+                                    type="checkbox"
+                                    checked={bankForm.isDefault}
+                                    onChange={(e) =>
+                                        setBankForm({
+                                            ...bankForm,
+                                            isDefault: e.target.checked,
+                                        })
+                                    }
+                                />
+                                <span className="slider"></span>
+                            </label>
+                        </div>
+                        <div className="form-actions">
+                            <button className="btn-cancel" onClick={() => setShowBankForm(false)}>
+                                Cancel
+                            </button>
+                            <button className="btn-save" onClick={handleSaveBank}>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {paymentMethod === "bank" && (
+                    <>
+                        {bankAccounts.map((bank) => {
+                            const color = BANK_COLORS[bank.bankName] || BANK_COLORS.default;
+
+                            return (
+                                <div
+                                    key={bank.id}
+                                    className="bank-detail"
+                                    style={{ borderLeft: `4px solid ${color}` }}
+                                >
+                                    <div className="bank-left">
+                        <span
+                            className="bank-name"
+                            style={{ color }}
+                        >
+                            {bank.bankName}
+                            {bank.isDefault && (
+                                <small className="default-tag"> Default</small>
+                            )}
+                        </span>
+
+                                        <span className="bank-number">
+                            {bank.accountNumber.replace(/\d(?=\d{4})/g, "*")}
+                        </span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
+
                 <label className="payment-option">
                     <input
                         type="radio"
@@ -386,6 +550,7 @@ function Account() {
                     <i className="fa fa-credit-card payment-icon"></i>
                     <span className="payment-text">Online Payment</span>
                 </label>
+
                 <label className="payment-option">
                     <input
                         type="radio"

@@ -6,7 +6,7 @@ import { RootState } from "../../components/redux/Store";
 import uniforms from "../../data/uniforms";
 import ProductCard from "../Products/ProductCard";
 import SidebarCategory from "../Products/SidebarCategory";
-import types from "../../data/tyles";
+import types from "../../components/redux/tyles";
 import IconMenu from "../../assets/icon/products/fi-br-menu-burger.svg";
 import IconUp from "../../assets/icon/products/fi-br-arrow-small-up.svg";
 import IconFilter from "../../assets/icon/products/auto_awesome.svg";
