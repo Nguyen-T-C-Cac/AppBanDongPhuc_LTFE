@@ -3,12 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from "../components/common/Navbar";
 import '../styles/orderSuccess.css';
 import iconCheck from '../assets/icon/order/checkorder.png';
-// SVG Check icon (hoặc bạn có thể import từ assets của bạn)
-const CheckIcon = () => (
-    <svg viewBox="0 0 24 24">
-        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-    </svg>
-);
 
 const OrderSuccess = () => {
     const location = useLocation();
