@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getOrders, Order } from "../utils/orderUtil";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import PageHeader from "../components/common/PageHeader";
 import iconDate from "../assets/icon/order/Calendar_light.svg"
@@ -9,8 +9,10 @@ import "../styles/order.css"
 const TABS = ["Pending Payment", "Confirmed", "In Production", "Shipped", "Delivered", "Canceled"];
 const Orders: React.FC = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [orders, setOrders] = useState<Order[]>([]);
-    const [activeTab, setActiveTab] = useState("Confirmed");
+    const [activeTab, setActiveTab] = useState(location.state?.activeTab ||"Confirmed");
 
     useEffect(() => {
         // Load danh sách đơn hàng từ LocalStorage
@@ -51,7 +53,7 @@ const Orders: React.FC = () => {
         ));
     };
     return (<div className="orders-page">
-        <PageHeader title="Orders List" count={orders.length}/>
+        <PageHeader title="Orders List" count={filteredOrders.length}/>
         <div className="orders-tabs">
             {TABS.map(tab => (
                 <div
@@ -98,7 +100,9 @@ const Orders: React.FC = () => {
                                             {renderSizeGrid([item])}
                                         </div>
 
-                                        <span className="view-details">View Details &gt;&gt;</span>
+                                        <span className="view-details"
+                                              onClick={() => navigate(`/order-detail/${encodeURIComponent(order.id)}`)}>
+                                            View Details &gt;&gt;</span>
                                     </div>
                                 </div>
                             ))}

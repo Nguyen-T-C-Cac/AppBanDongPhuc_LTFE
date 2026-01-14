@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Navbar from "../components/common/Navbar";
 import '../styles/orderSuccess.css';
-
+import iconCheck from '../assets/icon/order/checkorder.png';
 // SVG Check icon (hoặc bạn có thể import từ assets của bạn)
 const CheckIcon = () => (
     <svg viewBox="0 0 24 24">
@@ -17,7 +17,20 @@ const OrderSuccess = () => {
     // Lấy dữ liệu vừa gửi qua
     const { order } = location.state || {};
 
-    // Nếu người dùng truy cập trực tiếp mà không có data, đẩy về trang chủ
+    const handleViewHistory = () => {
+        let targetTab = "Confirmed"; // Mặc định
+        if (order) {
+            if (order.status === "Pending" || order.status === "Pending Payment") {
+                targetTab = "Pending Payment";
+            } else {
+                targetTab = order.status;
+            }
+        }
+
+        // Truyền state activeTab qua trang Orders
+        navigate("/orders", { state: { activeTab: targetTab } });
+    };
+
     if (!order) {
         return (
             <div className="success-page">
@@ -33,9 +46,8 @@ const OrderSuccess = () => {
     return (
         <div className="success-page">
             <div className="success-container">
-                {/* Icon Animated */}
                 <div className="success-icon-box">
-                    <CheckIcon />
+                    <img src={iconCheck} />
                 </div>
 
                 <h1 className="success-title">Order Successful!</h1>
@@ -76,7 +88,7 @@ const OrderSuccess = () => {
                         Continue Shopping
                     </button>
 
-                    <button className="btn-history" onClick={() => navigate("/orders")}>
+                    <button className="btn-history" onClick={handleViewHistory}>
                         View Order History
                     </button>
                 </div>

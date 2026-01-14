@@ -28,3 +28,17 @@ export const saveOrder = (newOrder: Order) => {
     const updatedOrders = [newOrder, ...currentOrders];
     localStorage.setItem("orderHistory", JSON.stringify(updatedOrders));
 };
+
+export const updateOrder = (updatedOrder: Order) => {
+    const orders = getOrders();
+    const index = orders.findIndex(o => o.id === updatedOrder.id);
+    if (index !== -1) {
+        orders[index] = updatedOrder;
+        localStorage.setItem("orderHistory", JSON.stringify(orders));
+    }
+};
+
+export const getOrderById = (id: string): Order | undefined => {
+    const orders = getOrders();
+    return orders.find(o => o.id === id);
+};

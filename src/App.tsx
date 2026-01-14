@@ -19,6 +19,7 @@ import BackLayout from "./layouts/BackLayout";
 import LoginLayout from "./layouts/LoginLayout";
 import Checkout from "./pages/CheckoutPage";
 import OrderSuccess from "./pages/OrderSuccess";
+import OrderDetail from "./pages/OrderDetail";
 
 
 function App() {
@@ -89,8 +90,12 @@ function App() {
                 element={<Checkout />
                 }
             />
+            <Route
+                path="/order-detail/:id"
+                element={<OrderDetail />
+                }
+            />
             <Route>
-
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
             </Route>
