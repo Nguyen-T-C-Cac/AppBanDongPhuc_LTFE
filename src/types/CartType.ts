@@ -16,6 +16,7 @@ export interface SizeItem {
 
 export interface CartItem {
     id: number;
+    idAccount: number;
     name: string;
     price: number;
     image: string;

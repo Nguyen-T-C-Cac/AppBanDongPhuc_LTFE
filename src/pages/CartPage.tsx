@@ -10,12 +10,19 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const Cart = () => {
-    const cartItems = useSelector(
-        (state: RootState) => state.cart.items
+    const navigate = useNavigate();
+    const currentUser = JSON.parse(
+        localStorage.getItem("currentUser") || "null"
     );
+
+    const currentUserId: number | null = currentUser?.id ?? null;
+
+    const cartItems = useSelector((state: RootState) =>
+        currentUserId ? state.cart.carts[currentUserId] ?? [] : []
+    );
+
     // State lưu danh sách ID các sản phẩm được tick chọn
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const navigate = useNavigate();
     const isAllSelected = cartItems.length > 0 && selectedItems.length === cartItems.length;
 
     // Nhấn nút All
@@ -70,6 +77,7 @@ const Cart = () => {
                     <CartItem
                         key={item.id}
                         item={item}
+                        userId={currentUserId!}
                         // Truyền trạng thái chọn và hàm xử lý xuống con
                         isSelected={selectedItems.includes(item.id)}
                         onToggleSelect={() => handleSelectItem(item.id)}

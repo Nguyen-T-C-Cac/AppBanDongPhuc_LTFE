@@ -2,10 +2,46 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/account.css";
 import { accountData } from "../data/account";
-import {User} from "../types/AccountType";
 import defaultMap from "../assets/images/ImageHome/avarta/map2.png";
 import {orderHistory} from "../data/orderHistory";
 import {getCurrentUser, saveCurrentUser} from "../utils/accountUtil";
+import { User, Address } from "../types/AccountType";
+import defaultAvatar from "../assets/images/avtAccount/avt.png";
+
+export const normalizeUser = (raw: any): User => {
+    const addresses: Address[] = Array.isArray(raw.addresses)
+        ? raw.addresses.map((addr: any) => ({
+            id: addr.id,
+            name: addr.name ?? "",
+            text: addr.text ?? "",
+            phone: addr.phone ?? "",
+            map: addr.map ?? "",
+        }))
+        : [];
+
+    return {
+        id: raw.id ?? 0,
+        username: raw.username ?? raw.user?.name ?? "",
+        email: raw.email ?? raw.user?.email ?? "",
+        avatar: raw.avatar ?? raw.user?.avatar ?? "/images/avt.png",
+
+        activeAddress: addresses[0] ?? {
+            id: 0,
+            name: "",
+            text: "",
+            phone: "",
+            map: "",
+        },
+        savedAddresses: addresses,
+        contact: {
+            phone: raw.contact?.phone ?? "",
+            email: raw.contact?.email ?? raw.email ?? "",
+        },
+        payment: raw.payment ?? "bank",
+        isLogin: raw.isLogin ?? true,
+        isMock: raw.isMock ?? true,
+    };
+};
 
 function Account() {
     const navigate = useNavigate();
@@ -24,26 +60,41 @@ function Account() {
     const [addressForm, setAddressForm] = useState({
         text: "",
     });
-    //const DEFAULT_MAP = "/images/ImageHome/avarta/map2.png"
-    const DEFAULT_AVATAR = "/images/avtAccount/avt.png";
+
     const deliveredOrders = orderHistory.filter((orderHistory: { status: string; }) => orderHistory.status === "Delivered");
 
     /* ================= INIT USER ================= */
     useEffect(() => {
-        const currentUser = getCurrentUser();
-        if (!currentUser) {
+        const currentUser = JSON.parse(
+            localStorage.getItem("currentUser") || "null"
+        );
+        if (!currentUser || !currentUser.isLogin) {
             navigate("/login");
             return;
         }
-        setUser(currentUser);
+        const defaultUser =
+            accountData.users.find(u => u.id === currentUser?.id)
+            ?? accountData.users[0];
+        const rawUser = currentUser.isMock
+            ? {
+                ...accountData,
+                ...currentUser,
+                addresses: currentUser?.addresses ?? defaultUser.addresses,
+                contact: currentUser?.contact ?? defaultUser.contact,
+            }
+            : currentUser;
 
+        const user = normalizeUser(rawUser);
         // Fill form
-        setAddressForm({ text: currentUser.activeAddress.text });
+        setUser(user);
+        console.log("user.avatar =", user.avatar);
+
+        setAddressForm({ text: user.activeAddress.text });
         setContactForm({
-            phone: currentUser.contact.phone,
-            email: currentUser.email,
+            phone: user.contact.phone,
+            email: user.email,
         });
-        setPaymentMethod(currentUser.payment);
+        setPaymentMethod(user.payment);
     }, []);
     /* ================= AVATAR ================= */
     const handleChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,7 +161,7 @@ function Account() {
 
     const handleCancelAddress = () => {
         if (!user) return;
-        setAddressForm({ text: user.activeAddress.text });
+        setAddressForm({ text: user.activeAddress.text || "",});
         setIsEditingAddress(false);
     };
 
@@ -121,10 +172,12 @@ function Account() {
             {/* PROFILE */}
             <section className="account-profile">
                 <div className="avatar-wrapper">
-                    <img className="avatar"
-                         src={user.avatar && user.avatar.trim() !== "" ? user.avatar : DEFAULT_AVATAR}
-                         alt="avatar"
+                    <img
+                        className="avatar"
+                        src={user.avatar && user.avatar.trim() !== "" ? user.avatar : defaultAvatar}
+                        alt="avatar"
                     />
+
 
                     <input type="file" accept="image/*" id="avatarInput" style={{ display: "none" }} onChange={handleChangeAvatar}/>
                     <button className="change-avatar-btn" onClick={() => document.getElementById("avatarInput")?.click()}>
@@ -171,15 +224,21 @@ function Account() {
                                 {user.activeAddress.text || "No address provided"}
                             </p>
                         ) : (
-                            <textarea
-                                className="address-input"
-                                value={addressForm.text}
-                                onChange={(e) => setAddressForm({ text: e.target.value })}
-                                placeholder="Enter your shipping address"
+                            <textarea className="address-input" value={addressForm.text}
+                                      onChange={(e) => setAddressForm({ text: e.target.value })}
+                                      placeholder="Enter your shipping address"
                             />
                         )}
+                        <img
+                            className="map-placeholder"
+                            src={
+                                user.activeAddress.map && user.activeAddress.map.trim() !== ""
+                                    ? user.activeAddress.map
+                                    : defaultMap
+                            }
+                            alt="map"
+                        />
 
-                        <img className="map-placeholder" src={user.activeAddress.map} alt="map" />
                     </div>
 
             {/* 4. CONTACT INFO */}
@@ -293,32 +352,61 @@ function Account() {
             {/* PAYMENT METHODS */}
             <section className="account-section">
                 <h4>Payment Methods</h4>
-                <label>
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "bank"}
                         onChange={() => setPaymentMethod("bank")}
                     />
-                    <span className="payment-text">Bank Transfer (BIDV)</span>
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-university payment-icon"></i>
+                    <span className="payment-text">Bank Transfer</span>
                 </label>
-                <label>
+                {/* BIDV DETAIL – CHỈ HIỆN KHI CHỌN BANK */}
+                {paymentMethod === "bank" && (
+                    <div className="bank-detail">
+                        <div className="bank-left">
+                            <span className="bank-name">BIDV</span>
+                            <span className="bank-number">937800****</span>
+                        </div>
+                        <button className="bank-add-btn">
+                            add &raquo;
+                        </button>
+                    </div>
+                )}
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "online"}
                         onChange={() => setPaymentMethod("online")}
                     />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-credit-card payment-icon"></i>
                     <span className="payment-text">Online Payment</span>
                 </label>
-                <label>
+                <label className="payment-option">
                     <input
                         type="radio"
                         name="payment"
                         checked={paymentMethod === "cod"}
                         onChange={() => setPaymentMethod("cod")}
                     />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-truck payment-icon"></i>
                     <span className="payment-text">Cash on Delivery</span>
+                </label>
+                <label className="payment-option">
+                    <input
+                        type="radio"
+                        name="payment"
+                        checked={paymentMethod === "deposit"}
+                        onChange={() => setPaymentMethod("deposit")}
+                    />
+                    <span className="custom-radio"></span>
+                    <i className="fa fa-file-text-o payment-icon"></i>
+                    <span className="payment-text">Deposit Payment</span>
                 </label>
             </section>
 

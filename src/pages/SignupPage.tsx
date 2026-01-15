@@ -22,6 +22,7 @@ function SignupPage() {
         }
 
         const newUser = {
+            id:Date.now(),
             username: userName.trim(),
             email: email.trim(),
             password,

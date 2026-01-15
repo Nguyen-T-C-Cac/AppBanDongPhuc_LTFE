@@ -1,98 +1,91 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartItem } from "../../types/CartType";
 
-const fakeCartItems: CartItem[] = [
-    {
-        id: 1,
-        name: "Áo polo thể dục",
-        price: 112000,
-        image: "/images/cart/polo.png",
-        gender: "Women / Men",
-        logoType: "No logo",
-        sizes: [
-            { size: "S", quantity: 1 },
-            { size: "M", quantity: 5 },
-            { size: "L", quantity: 6 },
-        ],
-    },
-    {
-        id: 2,
-        name: "Áo lớp đặt theo yêu cầu",
-        price: 157000,
-        image: "/images/cart/aolop.png",
-        gender: "Women / Men",
-        logoType: "Print",
-        sizes: [
-            { size: "S", quantity: 3 },
-            { size: "M", quantity: 11 },
-            { size: "L", quantity: 22 },
-        ],
-    },
-    {
-        id: 3,
-        name: "Sơ mi nữ dài tay đồng phục",
-        price: 259000,
-        image: "/images/cart/somi.png",
-        gender: "Women",
-        logoType: "Embroidery",
-        sizes: [
-            { size: "S", quantity: 50 },
-            { size: "M", quantity: 71 },
-            { size: "L", quantity: 121 },
-        ],
-    },
-];
-
 interface CartState {
-    items: CartItem[];
+    carts: {
+        [userId: number]: CartItem[];
+    };
 }
 
 const initialState: CartState = {
-    //items: [],
-    items: fakeCartItems,
+    carts: {},
 };
 
 const cartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart: (state, action: PayloadAction<CartItem>) => {
-            const existing = state.items.find(
-                item => item.id === action.payload.id
+        /* ================= ADD TO CART ================= */
+        addToCart: (
+            state,
+            action: PayloadAction<{
+                userId: number;
+                item: CartItem;
+            }>
+        ) => {
+            const { userId, item } = action.payload;
+
+            // tạo cart cho user nếu chưa có
+            if (!state.carts[userId]) {
+                state.carts[userId] = [];
+            }
+
+            const cart = state.carts[userId];
+
+            const existing = cart.find(
+                i => i.name === item.name
             );
 
             if (existing) {
                 // gộp size
-                action.payload.sizes.forEach(newSize => {
+                item.sizes.forEach(newSize => {
                     const oldSize = existing.sizes.find(
                         s => s.size === newSize.size
                     );
+
                     if (oldSize) {
                         oldSize.quantity += newSize.quantity;
                     } else {
                         existing.sizes.push(newSize);
                     }
                 });
+
+                existing.logoType = item.logoType;
             } else {
-                state.items.push(action.payload);
+                cart.push(item);
             }
         },
 
-        removeFromCart: (state, action: PayloadAction<number>) => {
-            state.items = state.items.filter(
-                item => item.id !== action.payload
-            );
-        },
-        updateSizeQuantity(
+        /* ================= REMOVE ITEM ================= */
+        removeFromCart: (
             state,
             action: PayloadAction<{
-                id: number;
+                userId: number;
+                cartItemId: number;
+            }>
+        ) => {
+            const { userId, cartItemId } = action.payload;
+
+            if (!state.carts[userId]) return;
+
+            state.carts[userId] = state.carts[userId].filter(
+                item => item.id !== cartItemId
+            );
+        },
+        updateSizeQuantity: (
+            state,
+            action: PayloadAction<{
+                userId: number;
+                cartItemId: number;
                 size: string;
                 delta: 1 | -1;
             }>
-        ) {
-            const { id, size, delta } = action.payload;
-            const item = state.items.find(i => i.id === id);
+        ) => {
+            const { userId, cartItemId, size, delta } = action.payload;
+            const cart = state.carts[userId];
+            if (!cart) return;
+
+            const item = cart.find(i => i.id === cartItemId);
             if (!item) return;
 
             const sizeItem = item.sizes.find(s => s.size === size);
@@ -101,15 +94,19 @@ const cartSlice = createSlice({
             sizeItem.quantity = Math.max(0, sizeItem.quantity + delta);
         },
 
-        updateLogoCustomization(
+        updateLogoCustomization: (
             state,
             action: PayloadAction<{
-                id: number;
+                userId: number;
+                cartItemId: number;
                 logoCustomization: any;
             }>
-        ) {
-            const { id, logoCustomization } = action.payload;
-            const item = state.items.find(i => i.id === id);
+        ) => {
+            const { userId, cartItemId, logoCustomization } = action.payload;
+            const cart = state.carts[userId];
+            if (!cart) return;
+
+            const item = cart.find(i => i.id === cartItemId);
             if (item) {
                 item.logoType = logoCustomization;
             }
@@ -118,5 +115,6 @@ const cartSlice = createSlice({
     },
 });
 
-export const { addToCart, removeFromCart, updateSizeQuantity, updateLogoCustomization} = cartSlice.actions;
+export const { addToCart, removeFromCart,updateSizeQuantity,
+    updateLogoCustomization, } = cartSlice.actions;
 export default cartSlice.reducer;

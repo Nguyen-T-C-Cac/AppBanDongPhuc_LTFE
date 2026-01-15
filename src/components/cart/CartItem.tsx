@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import '../../styles/cart.css'
+import "../../styles/cart.css";
 import trash from "../../assets/icon/cart/fi-rr-trash.svg";
-import { CartItem as CartItemType, LogoCustomization } from "../../types/CartType"
+import { CartItem as CartItemType, LogoCustomization } from "../../types/CartType";
 import { useDispatch } from "react-redux";
-import { removeFromCart, updateSizeQuantity, updateLogoCustomization } from "../redux/Cart";
+import {
+    removeFromCart,
+    updateSizeQuantity,
+    updateLogoCustomization
+} from "../redux/Cart";
 import LogoCustomizationModal from "./LogoCustomizationModal";
 
 interface Props {
     item: CartItemType;
+    userId: number;
     isSelected: boolean;
     onToggleSelect: () => void;
 }
@@ -20,7 +25,7 @@ const defaultLogoData: LogoCustomization = {
     notes: ""
 };
 
-const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
+const CartItem: React.FC<Props> = ({ item, userId, isSelected, onToggleSelect }) => {
     const dispatch = useDispatch();
     const [showLogoModal, setShowLogoModal] = useState(false);
 
@@ -29,31 +34,27 @@ const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
         0
     );
 
-    // Chuẩn bị dữ liệu
     const getInitialLogoData = (): LogoCustomization => {
-        if (!item.logoType) {
-            return defaultLogoData;
-        } else if (typeof item.logoType === 'string') {
+        if (!item.logoType) return defaultLogoData;
+        if (typeof item.logoType === "string") {
             return {
                 ...defaultLogoData,
                 logoType: item.logoType === "No logo" ? "No Logo" : item.logoType
             };
-        } else {
-            return item.logoType;
         }
+        return item.logoType;
     };
 
-    // Hiển thị tên Logo ra màn hình chính
     const getDisplayLogoName = () => {
         if (!item.logoType) return "No Logo";
-        if (typeof item.logoType === 'string') return item.logoType;
+        if (typeof item.logoType === "string") return item.logoType;
         return item.logoType.logoType;
     };
 
-    // Lưu dữ liệu từ Modal
     const handleSaveLogo = (newLogoData: LogoCustomization) => {
         dispatch(updateLogoCustomization({
-            id: item.id,
+            userId,
+            cartItemId: item.id,
             logoCustomization: newLogoData
         }));
         setShowLogoModal(false);
@@ -62,11 +63,11 @@ const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
     return (
         <div className="cart-item">
             <div className="cart-main-info">
-                <div className="cart-checkbox">
-                    <input type="checkbox" className="cart-checkbox"
-                           checked={isSelected}
-                           onChange={onToggleSelect} />
-                </div>
+                <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={onToggleSelect}
+                />
 
                 <img src={item.image} className="cart-img" alt={item.name} />
 
@@ -76,56 +77,66 @@ const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
                         <img
                             src={trash}
                             className="delete-icon"
-                            onClick={() => dispatch(removeFromCart(item.id))}
                             alt="delete"
+                            onClick={() =>
+                                dispatch(removeFromCart({
+                                    userId,
+                                    cartItemId: item.id
+                                }))
+                            }
                         />
                     </div>
-                    <div className="cart-price">{item.price.toLocaleString()} VND</div>
+
+                    <div className="cart-price">
+                        {item.price.toLocaleString()} VND
+                    </div>
 
                     <div className="cart-attributes">
                         <span className="tag">{item.gender}</span>
 
-                        <span className="tag clickable" onClick={() => setShowLogoModal(true)}>
-                            {getDisplayLogoName() || "Customize Logo >"}
+                        <span
+                            className="tag clickable"
+                            onClick={() => setShowLogoModal(true)}
+                        >
+                            {getDisplayLogoName()}
                         </span>
-
-                        {typeof item.logoType === "object" && item.logoType.image && (
-                            <img
-                                src={item.logoType.image}
-                                className="mini-logo-thumb"
-                                alt="logo"
-                            />
-                        )}
                     </div>
                 </div>
             </div>
 
-            <div className="separator"></div>
-
-            {/* Danh sách Size và Số lượng */}
             <div className="cart-sizes-list">
                 {item.sizes.map((s) => (
                     <div key={s.size} className="cart-size-row">
-                        <div className="size-label">
-                            Size: <b>{s.size}</b>
-                        </div>
+                        <span>Size: <b>{s.size}</b></span>
 
                         <div className="quantity-control">
-                            <button onClick={() =>
-                                dispatch(updateSizeQuantity({
-                                    id: item.id,
-                                    size: s.size,
-                                    delta: -1
-                                }))
-                            }>-</button>
+                            <button
+                                onClick={() =>
+                                    dispatch(updateSizeQuantity({
+                                        userId,
+                                        cartItemId: item.id,
+                                        size: s.size,
+                                        delta: -1
+                                    }))
+                                }
+                            >
+                                -
+                            </button>
+
                             <span>{s.quantity}</span>
-                            <button onClick={() =>
-                                dispatch(updateSizeQuantity({
-                                    id: item.id,
-                                    size: s.size,
-                                    delta: 1
-                                }))
-                            }>+</button>
+
+                            <button
+                                onClick={() =>
+                                    dispatch(updateSizeQuantity({
+                                        userId,
+                                        cartItemId: item.id,
+                                        size: s.size,
+                                        delta: 1
+                                    }))
+                                }
+                            >
+                                +
+                            </button>
                         </div>
                     </div>
                 ))}
@@ -135,7 +146,6 @@ const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
                 Total Quantity: <b>{totalQuantity}</b>
             </div>
 
-            {/* Sử dụng Component Modal */}
             <LogoCustomizationModal
                 isOpen={showLogoModal}
                 onClose={() => setShowLogoModal(false)}
@@ -144,6 +154,6 @@ const CartItem: React.FC<Props> = ({ item, isSelected, onToggleSelect }) => {
             />
         </div>
     );
-}
+};
 
 export default CartItem;
