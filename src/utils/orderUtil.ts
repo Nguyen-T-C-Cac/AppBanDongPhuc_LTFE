@@ -4,6 +4,7 @@ import { Address } from "../types/AccountType";
 
 export interface Order {
     id: string;
+    userId: number;
     date: string;
     items: CartItem[];
     total: number;
@@ -16,21 +17,30 @@ export interface Order {
 }
 
 // Hàm lấy danh sách đơn hàng
-export const getOrders = (): Order[] => {
+export const getOrders = (userId: number | null): Order[] => {
     const ordersJson = localStorage.getItem("orderHistory");
-    return ordersJson ? JSON.parse(ordersJson) : [];
+    const allOrders: Order[] = ordersJson ? JSON.parse(ordersJson) : [];
+
+    if (!userId) return []; // Không có user thì không trả về gì cả
+
+    // Chỉ trả về đơn hàng có userId trùng với người đang login
+    return allOrders.filter(order => order.userId === userId);
+
 };
 
 // Hàm lưu đơn hàng mới
 export const saveOrder = (newOrder: Order) => {
-    const currentOrders = getOrders();
+    const ordersJson = localStorage.getItem("orderHistory");
+    const currentOrders: Order[] = ordersJson ? JSON.parse(ordersJson) : [];
     // Thêm đơn hàng mới vào đầu danh sách
     const updatedOrders = [newOrder, ...currentOrders];
     localStorage.setItem("orderHistory", JSON.stringify(updatedOrders));
 };
 
 export const updateOrder = (updatedOrder: Order) => {
-    const orders = getOrders();
+    const ordersJson = localStorage.getItem("orderHistory");
+    const orders: Order[] = ordersJson ? JSON.parse(ordersJson) : [];
+
     const index = orders.findIndex(o => o.id === updatedOrder.id);
     if (index !== -1) {
         orders[index] = updatedOrder;
@@ -39,6 +49,7 @@ export const updateOrder = (updatedOrder: Order) => {
 };
 
 export const getOrderById = (id: string): Order | undefined => {
-    const orders = getOrders();
+    const ordersJson = localStorage.getItem("orderHistory");
+    const orders: Order[] = ordersJson ? JSON.parse(ordersJson) : [];
     return orders.find(o => o.id === id);
 };

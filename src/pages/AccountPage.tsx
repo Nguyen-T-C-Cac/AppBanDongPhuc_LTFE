@@ -155,7 +155,7 @@ function Account() {
         const user = normalizeUser(rawUser);
         // Fill form
         setUser(user);
-        console.log("user.avatar =", user.avatar);
+        //console.log("user.avatar =", user.avatar);
 
         setAddressForm({ text: user.activeAddress.text });
         setContactForm({

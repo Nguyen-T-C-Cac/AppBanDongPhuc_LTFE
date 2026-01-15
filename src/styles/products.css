@@ -1,5 +1,5 @@
 .products-page {
-    padding: 12px;
+    padding: 70px 12px;
 }
 
 /* SECTION TITLE */
@@ -61,11 +61,15 @@
     background: #F89225;
     display: flex;
     overflow-x: auto;
+    align-items: center;
+    justify-content: flex-start;
     gap: 12px;
-    padding: 8px;
+    padding: 12px 16px;
+    scrollbar-width: none;
 }
 
 .type-item {
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,6 +78,17 @@
     font-size: 11px;
     cursor: pointer;
 }
+@media (min-width: 768px) {
+    .type-list {
+        justify-content: center;
+        overflow-x: visible;
+    }
+
+    .type-item {
+        width: 80px;
+    }
+}
+
 .type-item.active {
     background: rgba(255,255,255,0.2);
 }
@@ -96,7 +111,7 @@
 /* PRODUCT GRID */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 12px;
 }
 

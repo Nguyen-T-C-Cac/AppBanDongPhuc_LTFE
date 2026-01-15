@@ -1,5 +1,6 @@
 .cart{
-    padding-top: 70px;
+    padding-top: 50px;
+    margin-top: -1px;
     padding-bottom: 170px;
     min-height: 100vh;
 }

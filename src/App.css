@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .App-logo {
@@ -12,48 +13,30 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 /*header*/
-.header {
-  position: sticky;
-  top: 5px;
-  height: 60px;
+.App-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
   background-color: #fff;
+  margin-bottom: 0px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  box-sizing: border-box;
   padding: 0 16px;
   border-bottom: 1px solid #e5e5e5;
   z-index: 1000;
 }
 
 .header-logo {
-  height: 40px;
+  width: auto;
+  object-fit: contain;
+  height: 50px;
   cursor: pointer;
 }
 
@@ -63,7 +46,7 @@
   gap: 16px; /* khoảng cách giữa search và cart */
 }
 
-.header-icons img {
+.header-icons {
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -73,12 +56,17 @@
   width: 180px;
   height: 36px;
   padding: 0 12px;
+  margin-bottom: 0px;
 
   border: 1px solid #ddd;
   border-radius: 18px;
   font-size: 14px;
-
+  outline: none;
   animation: slideIn 0.25s ease;
+}
+
+.App-link {
+  color: #61dafb;
 }
 
 /*Nav -bottom */
@@ -120,10 +108,7 @@
 .nav-bottom-item.active {
   color: #392EBE;
 }
-/*.content {
-  padding-top: 60px;
-  padding-bottom: 80px;
-}*/
+
 .nav-bottom-item.active img {
   filter: brightness(0) saturate(100%) invert(32%) sepia(87%) saturate(2254%)
   hue-rotate(202deg) brightness(98%) contrast(101%);

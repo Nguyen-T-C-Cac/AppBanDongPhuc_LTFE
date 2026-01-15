@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CartItem, LogoCustomization } from "../types/CartType";
+import {removeFromCart} from "../components/redux/Cart";
 import Navbar from "../components/common/Navbar";
 import '../styles/checkout.css';
 import PageHeader from "../components/common/PageHeader";
@@ -24,6 +25,7 @@ interface CheckoutLocationState {
 }
 
 const Checkout = () => {
+    const dispatch = useDispatch();
     const location = useLocation();
 
     const checkoutState = location.state as CheckoutLocationState | null;
@@ -104,6 +106,7 @@ const Checkout = () => {
         }
         return {
             id: orderId,
+            userId: currentUser ? currentUser.id : 0,
             date: new Date().toLocaleDateString("vi-VN",{timeZone: "Asia/Ho_Chi_Minh"}),
             items: checkoutItems,
             total: totalPayment,
@@ -135,8 +138,14 @@ const Checkout = () => {
         saveOrder(newOrder);
 
         // Xóa giỏ hàng
-        localStorage.removeItem("cart");
-
+        if (currentUser) {
+            checkoutItems.forEach(item => {
+                dispatch(removeFromCart({
+                    userId: currentUser.id,
+                    cartItemId: item.id
+                }));
+            });
+        }
         navigate("/order-success", { state: { order: newOrder } });
     };
     // Nếu không có sản phẩm nào

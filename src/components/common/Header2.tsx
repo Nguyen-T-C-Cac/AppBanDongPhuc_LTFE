@@ -11,19 +11,16 @@ import "../../styles/header2.css";
 interface Header2Props {
     title?: string;
     showBackButton?: boolean;
-    showSearch?: boolean;
     showCart?: boolean;
 }
 
 const Header2: React.FC<Header2Props> = ({
                                              title = "",
                                              showBackButton = true,
-                                             showSearch = true,
                                              showCart = true,
                                          }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [searchOpen, setSearchOpen] = useState(false);
 
     return (
         <header className="header">
@@ -40,25 +37,6 @@ const Header2: React.FC<Header2Props> = ({
             {/* Right icons */}
             <div className="header-right">
                 <div className="header2-right">
-                    <img
-                        src={searchIcon}
-                        alt="search"
-                        className="icon"
-                        onClick={() => {
-                            setSearchOpen(!searchOpen);
-                            if (searchOpen) dispatch(clearKeyword());
-                        }}
-                    />
-                    {searchOpen && (
-                        <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Search products..."
-                            autoFocus
-                            onChange={(e) => dispatch(setKeyword(e.target.value.trim()))}
-                        />
-                    )}
-                </div>
 
                 {showCart && (
                     <img
@@ -68,6 +46,7 @@ const Header2: React.FC<Header2Props> = ({
                         onClick={() => navigate("/cart")}
                     />
                 )}
+            </div>
             </div>
         </header>
     );

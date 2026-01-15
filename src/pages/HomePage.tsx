@@ -107,7 +107,7 @@ function HomePage() {
             <section className="principles-section">
                 <h3>OPERATING PRINCIPLES</h3>
                 <p className="principles-desc">
-                    Uniform91 xây dựng niềm tin với khách hàng và đối tác bằng cách tuân thủ nghiêm ngặt bốn nguyên tắc cốt lõi sau:
+                    Uniform91 builds trust with customers and partners by strictly adhering to the following four core principles:
                 </p>
                 <div className="principles-list">
                     <div className="principle-item">

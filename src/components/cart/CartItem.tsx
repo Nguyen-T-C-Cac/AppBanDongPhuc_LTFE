@@ -3,11 +3,7 @@ import "../../styles/cart.css";
 import trash from "../../assets/icon/cart/fi-rr-trash.svg";
 import { CartItem as CartItemType, LogoCustomization } from "../../types/CartType";
 import { useDispatch } from "react-redux";
-import {
-    removeFromCart,
-    updateSizeQuantity,
-    updateLogoCustomization
-} from "../redux/Cart";
+import {removeFromCart, updateSizeQuantity, updateLogoCustomization} from "../redux/Cart";
 import LogoCustomizationModal from "./LogoCustomizationModal";
 
 interface Props {
@@ -98,8 +94,15 @@ const CartItem: React.FC<Props> = ({ item, userId, isSelected, onToggleSelect })
                             className="tag clickable"
                             onClick={() => setShowLogoModal(true)}
                         >
-                            {getDisplayLogoName()}
+                            {getDisplayLogoName() || "Customize Logo >"}
                         </span>
+                        {typeof item.logoType === "object" && item.logoType.image && (
+                            <img
+                                src={item.logoType.image}
+                                className="mini-logo-thumb"
+                                alt="logo"
+                            />
+                        )}
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ body {
 }
 /* ===== RESET NHẸ ===== */
 .account-page {
+    padding-top: 30px;
     max-width: 420px;
     margin: 5px auto;
     font-family: Arial, sans-serif;

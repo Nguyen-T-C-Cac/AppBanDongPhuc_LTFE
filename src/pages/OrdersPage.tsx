@@ -13,12 +13,18 @@ const Orders: React.FC = () => {
 
     const [orders, setOrders] = useState<Order[]>([]);
     const [activeTab, setActiveTab] = useState(location.state?.activeTab ||"Confirmed");
-
+    // Lấy thông tin user hiện tại
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
     useEffect(() => {
+        if (!currentUser) {
+
+            navigate("/login");
+            return;
+        }
         // Load danh sách đơn hàng từ LocalStorage
-        const data = getOrders();
+        const data = getOrders(currentUser.id);
         setOrders(data);
-    }, []);
+    }, [navigate]);
     // Lọc đơn hàng theo Tab
     const filteredOrders = orders.filter(order => {
         if (activeTab === "Pending Payment") {

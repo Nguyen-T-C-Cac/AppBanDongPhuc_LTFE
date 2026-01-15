@@ -1,7 +1,8 @@
 .header {
-    position: sticky;
-    margin-top: -40px;
-    height: 60px;
+    position: fixed;
+    height: 70px;
+    width: 100%;
+    top: 0;
     background-color: #fff;
     display: flex;
     align-items: center;
