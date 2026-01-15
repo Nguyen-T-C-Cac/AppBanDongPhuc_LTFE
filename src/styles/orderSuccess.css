@@ -1,14 +1,12 @@
-/* src/styles/orderSuccess.css */
 
 .success-page {
-    background-color: #f8f9fa;
+    background-color: #F6F9FF;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    padding-bottom: 80px; /* Chừa chỗ cho Navbar */
+    padding: 0px 15px 80px 15px;
     font-family: 'Arial', sans-serif;
 }
 
@@ -32,17 +30,16 @@
 .success-icon-box {
     width: 80px;
     height: 80px;
-    background-color: #e8f5e9; /* Xanh nhạt */
+    background-color: #e8f5e9;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px;
 }
-.success-icon-box svg {
-    width: 40px;
-    height: 40px;
-    fill: #27ae60; /* Xanh lá đậm */
+.success-icon-box img {
+    width: 55px;
+    height: 55px;
 }
 
 /* Typography */

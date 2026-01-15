@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getOrderById, updateOrder, Order } from "../utils/orderUtil";
 import Navbar from "../components/common/Navbar";
 import PageHeader from "../components/common/PageHeader";
+import LogoDetails from "../components/payment/LogoDetails";
+import PaymentQRModal from "../components/payment/PaymentQRModal";
 import "../styles/orderDetail.css";
 import { Address } from "../types/AccountType";
 
@@ -15,6 +17,9 @@ const OrderDetail = () => {
     const [isEditingAddress, setIsEditingAddress] = useState(false);
     const [tempAddress, setTempAddress] = useState<Address | null>(null);
     const [showConfirmCancel, setShowConfirmCancel] = useState(false);
+
+    const [showConfirmBank, setShowConfirmBank] = useState(false);
+    const [showQRModal, setShowQRModal] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -34,7 +39,6 @@ const OrderDetail = () => {
         updateOrder(updatedOrder);
         setOrder(updatedOrder);
         setShowConfirmCancel(false);
-        alert("Order has been canceled.");
     };
 
     // Lưu địa chỉ mới
@@ -44,37 +48,44 @@ const OrderDetail = () => {
             updateOrder(updatedOrder);
             setOrder(updatedOrder);
             setIsEditingAddress(false);
-            alert("Address updated successfully!");
+
         } else {
             alert("Address cannot be empty.");
         }
     };
-
+//hiển thị tên Logo
+    const getDisplayLogoName = (logoType: any) => {
+        if (!logoType) return "No Logo";
+        if (typeof logoType === 'string') return logoType;
+        return logoType.logoType;
+    };
     // Đổi từ COD sang Bank Transfer
-    const handleSwitchToBank = () => {
-        if (window.confirm("Switch payment method to Bank Transfer? Order status will change to Pending Payment.")) {
+    const processSwitchToBank = () => {
             const updatedOrder = {
                 ...order,
                 paymentMethod: "bank",
                 status: "Pending Payment"
             };
             updateOrder(updatedOrder);
+            // Cập nhật state trang hiện tại
             setOrder(updatedOrder);
-            alert("Switched to Bank Transfer. Please check your email/QR for payment info.");
-            // Có thể navigate sang trang QR hoặc hiện popup QR tại đây nếu muốn
+            setShowConfirmBank(false);
+            // Hiện Modal QR ngay lập tức
+            setShowQRModal(true);
 
-        }
     };
-
+    const onSwitchToBankClick = () => {
+        setShowConfirmBank(true);
+    };
     // Cho phép khi chưa giao hàng
     const canEdit = ["Pending Payment", "Pending", "Confirmed", "Processing"].includes(order.status);
 
     return (
-        <div className="order-detail-page">
+        <div className="order-detail">
             <PageHeader title="Order detail" />
+
             <div className="detail-container">
-                {/* 1. Thông tin trạng thái */}
-                <div className="detail-card status-card">
+                <div className="detail-card">
                     <div className="row">
                         <span>Order ID:</span> <b>{order.id}</b>
                     </div>
@@ -89,12 +100,11 @@ const OrderDetail = () => {
                     </div>
                 </div>
 
-                {/* 2. Địa chỉ giao hàng (Có nút Edit) */}
                 <div className="detail-card">
                     <div className="card-title-row">
                         <h3>Shipping Address</h3>
                         {canEdit && !isEditingAddress && (
-                            <button className="btn-small-edit" onClick={() => setIsEditingAddress(true)}>Edit</button>
+                            <button className="btn-edit" onClick={() => setIsEditingAddress(true)}>Edit</button>
                         )}
                     </div>
 
@@ -122,35 +132,63 @@ const OrderDetail = () => {
                                 <button className="btn-cancel-edit" onClick={() => {
                                     setIsEditingAddress(false);
                                     setTempAddress(order.address); // Reset
-                                }}>Cancel</button>
+                                }}>Cancel
+                                </button>
                             </div>
                         </div>
                     ) : (
                         <div className="address-display">
-                            <p><b>{order.address.name}</b> ({order.address.phone})</p>
-                            <p>{order.address.text}</p>
+                            <p className="name">{order.address.name} <span>({order.address.phone})</span></p>
+                            <p className="address">{order.address.text}</p>
                         </div>
                     )}
                 </div>
 
                 {/* 3. Danh sách sản phẩm */}
-                <div className="detail-card">
-                    <h3>Items</h3>
-                    {order.items.map((item, idx) => (
-                        <div key={idx} className="detail-item-row">
-                            <img src={item.image} alt={item.name} />
-                            <div className="detail-item-info">
-                                <p className="d-name">{item.name}</p>
-                                <p className="d-price">{item.price.toLocaleString()} VND</p>
-                                <div className="d-meta">
-                                    Qty: {item.sizes.reduce((s,c)=>s+c.quantity, 0)} | {item.gender}
+                <div className="detail-card items-card-container">
+                    <h3>Product Info</h3>
+                    {order.items.map((item, idx) => {
+                        // Tính tổng số lượng
+                        const totalQty = item.sizes.reduce((s, i) => s + i.quantity, 0);
+
+                        return (
+                            <div key={idx} className="checkout-item">
+                                <div className="item-title">
+                                    {item.name} <span>/ {item.price.toLocaleString()} VND</span>
                                 </div>
+
+                                <div className="item-body">
+                                    <img src={item.image} alt={item.name}/>
+
+                                    <div className="item-info">
+                                        <div className="size-table">
+                                            <div className="table-header">
+                                                <span>Size</span>
+                                                <span>Quantity</span>
+                                                <span>Gender</span>
+                                                <span>Logo type</span>
+                                            </div>
+
+                                            {item.sizes.map((s, i) => (
+                                                <div key={i} className="table-row">
+                                                    <span>{s.size}</span>
+                                                    <span>{s.quantity}</span>
+                                                    <span>{item.gender}</span>
+                                                    <span>{getDisplayLogoName(item.logoType)}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="total-qty">Total Quantity: {totalQty}</div>
+                                    </div>
+                                </div>
+                                <LogoDetails logoData={item.logoType} />
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
-                {/* 4. Thông tin thanh toán (Có nút đổi phương thức) */}
+                {/* 4. Thông tin thanh toán */}
                 <div className="detail-card">
                     <h3>Payment Info</h3>
                     <div className="row">
@@ -164,16 +202,19 @@ const OrderDetail = () => {
                     {canEdit && order.paymentMethod === 'cod' && (
                         <div className="payment-action">
                             <p className="hint-text">Want to pay via Bank Transfer instead?</p>
-                            <button className="btn-switch-payment" onClick={handleSwitchToBank}>
+                            <button className="btn-switch-payment" onClick={onSwitchToBankClick}>
                                 Pay via Bank Transfer
                             </button>
                         </div>
                     )}
 
                     <div className="divider"></div>
-                    <div className="row"><span>Subtotal:</span> <span>{(order.total - order.shippingFee).toLocaleString()} VND</span></div>
-                    <div className="row"><span>Shipping:</span> <span>{order.shippingFee.toLocaleString()} VND</span></div>
-                    <div className="row total-row"><span>Total:</span> <span>{order.total.toLocaleString()} VND</span></div>
+                    <div className="row"><p>Subtotal:</p>
+                        <span>{(order.total - order.shippingFee).toLocaleString()} VND</span></div>
+                    <div className="row"><p>Shipping:</p> <span>{order.shippingFee.toLocaleString()} VND</span>
+                    </div>
+                    <div className="row total-row"><span>Total:</span> <span>{order.total.toLocaleString()} VND</span>
+                    </div>
                 </div>
 
                 {/* 5. Nút Hủy Đơn */}
@@ -199,7 +240,23 @@ const OrderDetail = () => {
                     </div>
                 </div>
             )}
-
+            {showConfirmBank && (
+                <div className="modal-overlay">
+                    <div className="modal-confirm">
+                        <h3>Switch Payment Method?</h3>
+                        <p>Order status will change to <b>Pending Payment</b>. Are you sure you want to pay via Bank Transfer?</p>
+                        <div className="modal-actions">
+                            <button onClick={() => setShowConfirmBank(false)}>Cancel</button>
+                            <button className="confirm-blue" onClick={processSwitchToBank}>Yes, Switch & Pay</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <PaymentQRModal
+                isOpen={showQRModal}
+                onClose={() => setShowQRModal(false)}
+                totalAmount={order.total}
+            />
             <Navbar/>
         </div>
     );
