@@ -1,0 +1,156 @@
+
+.orders-page {
+    background-color: #F6F9FF;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    padding-top: 40px;
+}
+.orders-tabs {
+    display: flex;
+    background: white;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #ddd;
+}
+.tab-item {
+    flex: 1;
+    text-align: center;
+    padding: 15px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    min-width: 100px;
+}
+.tab-item.active {
+    color: #e67e22; /* Màu cam chữ */
+    border-bottom-color: #FE7329; /* Gạch chân cam */
+}
+
+.order-card {
+    background: white;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* ID & Date */
+.card-header-bar {
+    background-color: #e0e0e0;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+}
+.order-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #E52828;
+    font-weight: normal;
+}
+
+.card-body {
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    position: relative;
+}
+.product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.product-info {
+    flex: 1;
+}
+.product-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 4px;
+}
+.product-name span {
+    color: #14056E;
+    font-weight: normal;
+}
+.view-details {
+    color: #e67e22;
+    font-size: 12px;
+    text-decoration: none;
+    position: absolute;
+    right: 0px;
+    top: 5px;
+    cursor: pointer;
+}
+
+/* Size Grid Layout */
+.size-grid {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 0.5fr 0.5fr 1.5fr 1.5fr; /* Chia cột layout */
+    gap: 8px 10px;
+    font-size: 12px;
+}
+.grid-header {
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.grid-row-item {
+    display: contents; /* Để các phần tử con lọt vào grid cha */
+}
+.size-box {
+    font-weight: bold;
+    padding-top: 5px;
+}
+.qty-box {
+    background: #ecf0f1;
+    text-align: center;
+    padding: 4px 0;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.gender-box, .logo-box {
+    background: #ecf0f1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Total Summary */
+.order-summary {
+    padding: 0 15px;
+    text-align: right;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.total-qty-text {
+    font-weight: bold;
+    color: #333;
+}
+
+.card-footer-bar {
+    border-top: 1px solid #eee;
+    padding: 10px 15px;
+    text-align: right;
+    font-size: 15px;
+}
+.card-footer-bar span {
+    color: #333;
+    font-weight: bold;
+}
+.no-orders {
+    text-align: center;
+    font-size: 14px;
+    padding: 40px;
+    color: #999;
+}

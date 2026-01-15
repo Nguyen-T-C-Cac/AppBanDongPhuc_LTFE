@@ -103,8 +103,8 @@
 /* --- Styles cho phần Logo Customization Details --- */
 .custom-logo-details {
     margin-top: 15px;
-    background-color: #f8f9fa; /* Màu nền xám nhạt */
-    border: 1px dashed #ced4da; /* Viền nét đứt tạo cảm giác "thông tin thêm" */
+    background-color: #f8f9fa;
+    border: 1px dashed #ced4da;
     border-radius: 6px;
     padding: 10px;
     font-size: 13px;
@@ -112,7 +112,7 @@
 
 .custom-header {
     font-weight: 700;
-    color: #e67e22; /* Màu cam chủ đạo */
+    color: #e67e22;
     margin-bottom: 8px;
     font-size: 12px;
     text-transform: uppercase;
